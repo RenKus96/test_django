@@ -5,7 +5,7 @@ class Command(BaseCommand):
     help = 'Команда для генерация студентов'
 
     def add_arguments(self, parser):
-        parser.add_argument('count', type=int, help=u'Количество создаваемых студентов')
+        parser.add_argument('count', type=int, nargs='?', default=10, help=u'Количество создаваемых студентов')
 
     def handle(self, *args, **options):
         count = options['count']
