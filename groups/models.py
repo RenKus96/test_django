@@ -2,7 +2,7 @@ import datetime
 from django.db import models
 
 # Create your models here.
-class Groups(models.Model):
+class Group(models.Model):
     group_number = models.IntegerField(null=False)
     academic_subject = models.CharField(max_length=80, null=False)
     date_of_creation = models.DateField(default=datetime.date.today)
