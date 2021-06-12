@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from django.core.management.base import BaseCommand, CommandError
 from students.models import Student
 
@@ -12,4 +13,5 @@ class Command(BaseCommand):
         out_str = f'Сгенерировано {count} студентов:\n'
         for num, student in enumerate(Student.generate_students(count),1):
             out_str += f'{num}. {student}\n'
+
         self.stdout.write(self.style.SUCCESS(out_str))
