@@ -2,7 +2,7 @@ import datetime
 from django.db import models
 
 # Create your models here.
-class Teachers(models.Model):
+class Teacher(models.Model):
     last_name = models.CharField(max_length=80, null=False)
     first_name = models.CharField(max_length=50, null=False)
     birthdate = models.DateField(default=datetime.date.today)
