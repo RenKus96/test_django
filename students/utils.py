@@ -5,4 +5,11 @@ def format_list(lst):
 def format_records(lst):
     if len(lst) == 0:
         return '(Emtpy recordset)'
-    return '<br>'.join(f'<b>{num}.</b> {elem}' for num,elem in enumerate(lst, 1))
+
+    result = []
+
+    for elem in lst:
+        formatted_elem = f'<a href="/students/update/{elem.id}">EDIT</a> {elem}'
+        result.append(formatted_elem)
+
+    return '<br>'.join(result)
