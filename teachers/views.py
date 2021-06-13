@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from webargs.djangoparser import use_kwargs, use_args
 from webargs import fields, validate, ValidationError
 from teachers.models import Teacher
-from students.utils import format_records
+from teachers.utils import format_records
 
 @use_kwargs({
     "count": fields.Int(

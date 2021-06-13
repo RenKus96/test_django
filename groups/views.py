@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from webargs.djangoparser import use_kwargs, use_args
 from webargs import fields, validate, ValidationError
 from groups.models import Group
-from students.utils import format_records
+from groups.utils import format_records
 
 # Create your views here.
 @use_kwargs({
