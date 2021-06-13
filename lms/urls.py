@@ -32,4 +32,3 @@ urlpatterns = [
     path('get_teachers/', get_teachers),
     path('generate_teachers/', generate_teachers)
 ]
-
