@@ -123,5 +123,3 @@ def update_student(request, id):
     response = html_form
 
     return HttpResponse(response)
-
-
