@@ -30,6 +30,7 @@ class Student(models.Model):
     @staticmethod
     def generate_students(count):
         faker = Faker()
+        create_students = []
         for _ in range(count):
             st = Student(
                 first_name=faker.first_name(),
@@ -39,3 +40,5 @@ class Student(models.Model):
             )
 
             st.save()
+            create_students.append(str(st))
+        return create_students
