@@ -22,9 +22,9 @@ from teachers.views import get_teachers, generate_teachers
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('hello/', hello),
-    path('generate_students/', generate_students),
-#     path('students/', get_students),
     path('get_students/', get_students),
+    path('generate_students/', generate_students),
+    path('students/', get_students),
     path('students/create/', create_student),
     path('students/update/', update_student),
     path('get_groups/', get_groups),
