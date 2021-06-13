@@ -1,4 +1,6 @@
 from django.http import HttpResponse
+from webargs.djangoparser import use_kwargs, use_args
+from webargs import fields, validate, ValidationError
 from django.shortcuts import render  # noqa
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
@@ -7,27 +9,23 @@ from students.forms import StudentCreateForm
 from students.models import Student
 from students.utils import format_records
 
-
 def hello(request):
     return HttpResponse('Hello')
 
 
-#
-#
-# @use_kwargs({
-#     "count": fields.Int(
-#         required=False,
-#         missing=100,
-#         validate=[validate.Range(min=1, max=999)]
-#     )},
-#     location="query"
-# )
-# def generate_students(request, count):
-#     return HttpResponse('Hello')
-
-from webargs.djangoparser import use_kwargs, use_args
-from webargs import fields
-
+@use_kwargs({
+    "count": fields.Int(
+        required=False,
+        missing=10,
+        validate=[validate.Range(min=1, max=999)]
+    )},
+    location="query"
+)
+def generate_students(request, count):
+    out_str = f'Сгенерировано <b>{count}</b> студентов:<br>'
+    for num, student in enumerate(Student.generate_students(count),1):
+        out_str += f'<b>{num}.</b> {student}<br>'
+    return HttpResponse(out_str)
 
 @use_args({
     "first_name": fields.Str(
