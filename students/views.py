@@ -1,13 +1,14 @@
-from django.http import HttpResponse
-from webargs.djangoparser import use_kwargs, use_args
-from webargs import fields, validate, ValidationError
-from django.shortcuts import render  # noqa
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
+# from django.shortcuts import render
 
-from students.forms import StudentCreateForm
-from students.models import Student
-from students.utils import format_records
+from students.forms import StudentCreateForm  # type: ignore
+from students.models import Student  # type: ignore
+from students.utils import format_records  # type: ignore
+
+from webargs import fields, validate
+from webargs.djangoparser import use_args, use_kwargs
+
 
 def hello(request):
     return HttpResponse('Hello')
@@ -23,9 +24,10 @@ def hello(request):
 )
 def generate_students(request, count):
     out_str = f'Сгенерировано <b>{count}</b> студентов:<br>'
-    for num, student in enumerate(Student.generate_students(count),1):
+    for num, student in enumerate(Student.generate_students(count), 1):
         out_str += f'<b>{num}.</b> {student}<br>'
     return HttpResponse(out_str)
+
 
 @use_args({
     "first_name": fields.Str(
@@ -95,8 +97,8 @@ def create_student(request):
 
 
 @csrf_exempt
-def update_student(request, id):
-    student = Student.objects.get(id=id)
+def update_student(request, id_student):
+    student = Student.objects.get(id=id_student)
 
     if request.method == 'GET':
 

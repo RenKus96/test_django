@@ -1,9 +1,12 @@
-from django.shortcuts import render
 from django.http import HttpResponse
-from webargs.djangoparser import use_kwargs, use_args
-from webargs import fields, validate, ValidationError
-from teachers.models import Teacher
-from teachers.utils import format_records
+# from django.shortcuts import render
+
+from teachers.models import Teacher  # type: ignore
+from teachers.utils import format_records  # type: ignore
+
+from webargs import fields, validate
+from webargs.djangoparser import use_args, use_kwargs
+
 
 @use_kwargs({
     "count": fields.Int(
@@ -15,9 +18,10 @@ from teachers.utils import format_records
 )
 def generate_teachers(request, count):
     out_str = f'Сгенерировано <b>{count}</b> преподавателей:<br>'
-    for num, teacher in enumerate(Teacher.generate_teachers(count),1):
+    for num, teacher in enumerate(Teacher.generate_teachers(count), 1):
         out_str += f'<b>{num}.</b> {teacher}<br>'
     return HttpResponse(out_str)
+
 
 @use_args({
     "first_name": fields.Str(
