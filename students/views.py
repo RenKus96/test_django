@@ -5,7 +5,6 @@ from django.views.decorators.csrf import csrf_exempt
 from students.forms import StudentCreateForm  # type: ignore
 from students.models import Student  # type: ignore
 from students.utils import format_records  # type: ignore
-
 from webargs import fields, validate
 from webargs.djangoparser import use_args, use_kwargs
 
