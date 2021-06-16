@@ -1,3 +1,4 @@
 env/
 .idea/
 *.pyc
+activate_django.cmd
