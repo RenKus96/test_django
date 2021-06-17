@@ -1,8 +1,8 @@
 from django.http import HttpResponse
 # from django.shortcuts import render
 
-from teachers.models import Teacher  # type: ignore
-from teachers.utils import format_records  # type: ignore
+from teachers.models import Teacher
+from teachers.utils import format_records
 
 from webargs import fields, validate
 from webargs.djangoparser import use_args, use_kwargs

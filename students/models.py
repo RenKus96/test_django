@@ -5,7 +5,7 @@ from django.db import models
 
 from faker import Faker
 
-from students.validators import adult_validator  # type: ignore
+from students.validators import adult_validator
 
 
 class Student(models.Model):

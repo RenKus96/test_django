@@ -9,7 +9,8 @@ def format_records(lst):
     result = []
 
     for elem in lst:
-        formatted_elem = f'<a href="/teachers/update/{elem.id}">EDIT</a> {elem}'
+        formatted_elem = f'<a href="/teachers/update/{elem.id}"\
+            >EDIT</a> {elem}'
         result.append(formatted_elem)
 
     return '<br>'.join(result)

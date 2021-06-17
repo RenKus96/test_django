@@ -1,8 +1,8 @@
 from django.http import HttpResponse
 # from django.shortcuts import render
 
-from groups.models import Group  # type: ignore
-from groups.utils import format_records  # type: ignore
+from groups.models import Group
+from groups.utils import format_records
 
 from webargs import fields, validate
 from webargs.djangoparser import use_args, use_kwargs
