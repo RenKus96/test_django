@@ -4,7 +4,7 @@ from teachers.models import Teacher
 
 
 class Command(BaseCommand):
-    help = 'Команда для генерация преподавателей'
+    help = 'Команда для генерация преподавателей'  # noqa
 
     def add_arguments(self, parser):
         parser.add_argument(

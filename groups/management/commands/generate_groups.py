@@ -4,7 +4,7 @@ from groups.models import Group
 
 
 class Command(BaseCommand):
-    help = 'Команда для генерация групп'
+    help = 'Команда для генерация групп'  # noqa
 
     def add_arguments(self, parser):
         parser.add_argument(

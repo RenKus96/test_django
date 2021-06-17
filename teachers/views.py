@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-# from django.shortcuts import render
+from django.shortcuts import render  # noqa
 
 from teachers.models import Teacher
 from teachers.utils import format_records
