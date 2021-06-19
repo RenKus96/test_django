@@ -26,10 +26,10 @@ def generate_groups(request, count):
 
 
 @use_args({
-    "group_number": fields.Int(
-        required=False,
-        validate=[validate.Range(min=1, max=100)]
-    ),
+    # "group_number": fields.Int(
+    #     required=False,
+    #     validate=[validate.Range(min=1, max=100)]
+    # ),
     "academic_subject": fields.Str(
         required=False
     ),
@@ -41,9 +41,23 @@ def generate_groups(request, count):
 def get_groups(request, args):
     groups = Group.objects.all()
     for param_name, param_value in args.items():
-        groups = groups.filter(**{param_name: param_value})
+        if param_value:
+            groups = groups.filter(**{param_name: param_value})
+    html_form = """
+       <form method="get">
+        <label>Group number:</label>
+        <input type="number" name="group_number"><br><br>
+
+        <label >Academic subject:</label>
+        <input type="text" name="academic_subject"><br><br>
+
+        <input type="submit" value="Search">
+       </form>
+    """
     records = format_records(groups)
-    return HttpResponse(records)
+    response = html_form + records
+
+    return HttpResponse(response)
 
 
 @csrf_exempt

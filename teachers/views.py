@@ -1,6 +1,8 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render  # noqa
 
+from teachers.forms import TeacherCreateForm
 from teachers.models import Teacher
 from teachers.utils import format_records
 
@@ -33,10 +35,10 @@ def generate_teachers(request, count):
     "birthdate": fields.Date(
         required=False
     ),
-    "years_of_experience": fields.Int(
-        required=False,
-        validate=[validate.Range(min=1, max=60)]
-    ),
+    # "years_of_experience": fields.Int(
+    #     required=False,
+    #     validate=[validate.Range(min=1, max=60)]
+    # ),
     "academic_degrees": fields.Str(
         required=False
     )},
@@ -45,6 +47,41 @@ def generate_teachers(request, count):
 def get_teachers(request, args):
     teachers = Teacher.objects.all()
     for param_name, param_value in args.items():
-        teachers = teachers.filter(**{param_name: param_value})
+        if param_value:
+            teachers = teachers.filter(**{param_name: param_value})
+    html_form = """
+       <form method="get">
+        <label >First name:</label>
+        <input type="text" name="first_name"><br><br>
+
+        <label >Last name:</label>
+        <input type="text" name="last_name"><br><br>
+
+        <label >Academic degrees:</label>
+        <input type="text" name="academic_degrees"><br><br>
+
+        <input type="submit" value="Search">
+       </form>
+    """
     records = format_records(teachers)
-    return HttpResponse(records)
+    response = html_form + records
+
+    return HttpResponse(response)
+
+@csrf_exempt
+def create_teacher(request):
+    if request.method == 'GET':
+        form = TeacherCreateForm()
+    elif request.method == 'POST':
+        form = TeacherCreateForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/teachers/')
+    html_form = f"""
+    <form method="post">
+      {form.as_p()}
+      <input type="submit" value="Create">
+    </form>
+    """
+    response = html_form
+    return HttpResponse(response)

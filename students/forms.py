@@ -14,6 +14,7 @@ class StudentBaseForm(ModelForm):
             'last_name',
             'age',
             'birthdate',
+            'email',
             'enroll_date',
             'graduate_date',
         ]
@@ -62,6 +63,7 @@ class StudentUpdateForm(StudentBaseForm):
             'last_name',
             # 'age',
             'birthdate',
+            'email',
             'enroll_date',
             'graduate_date',
             'graduate_date2',

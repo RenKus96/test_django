@@ -5,6 +5,8 @@ from django.db import models
 
 from faker import Faker
 
+from students.validators import email_stop_list_validator
+
 ACADEMIC_DEGREES = [
     'ассистент', 'преподаватель', 'старший преподаватель',
     'доцент', 'профессор', 'заведующий кафедрой'
@@ -16,7 +18,9 @@ class Teacher(models.Model):
     last_name = models.CharField(max_length=80, null=False)
     first_name = models.CharField(max_length=50, null=False)
     birthdate = models.DateField(default=datetime.date.today)
-    email = models.EmailField(max_length=120, null=True)
+    email = models.EmailField(max_length=120, null=True, validators=[
+        email_stop_list_validator
+    ])
     years_of_experience = models.IntegerField(default=0)
     academic_degrees = models.CharField(max_length=80, null=False)
 
