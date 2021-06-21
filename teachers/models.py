@@ -1,21 +1,32 @@
 import datetime
-from django.db import models
-from faker import Faker
 import random
 
-ACADEMIC_DEGREES = ['ассистент', 'преподаватель', 'старший преподаватель', 'доцент', 'профессор', 'заведующий кафедрой']
+from django.db import models
+
+from faker import Faker
+
+from students.validators import email_stop_list_validator
+
+ACADEMIC_DEGREES = [
+    'ассистент', 'преподаватель', 'старший преподаватель',
+    'доцент', 'профессор', 'заведующий кафедрой'
+]
+
 
 # Create your models here.
 class Teacher(models.Model):
     last_name = models.CharField(max_length=80, null=False)
     first_name = models.CharField(max_length=50, null=False)
     birthdate = models.DateField(default=datetime.date.today)
-    email = models.EmailField(max_length=120, null=True)
+    email = models.EmailField(max_length=120, null=True, validators=[
+        email_stop_list_validator
+    ])
     years_of_experience = models.IntegerField(default=0)
     academic_degrees = models.CharField(max_length=80, null=False)
 
     def __str__(self):
-        return f'{self.academic_degrees} {self.full_name()}, email:{self.email}'
+        return f'{self.academic_degrees} {self.full_name()}, \
+            email:{self.email}'
 
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
@@ -28,10 +39,13 @@ class Teacher(models.Model):
             tchr = Teacher(
                 first_name=faker.first_name(),
                 last_name=faker.last_name(),
-                birthdate=faker.date_between(start_date='-80y', end_date='-20y'),
+                birthdate=faker.date_between(
+                    start_date='-80y',
+                    end_date='-20y'
+                ),
                 email=faker.email(),
-                years_of_experience = faker.random_int(min=1, max=60),
-                academic_degrees = random.choice(ACADEMIC_DEGREES)
+                years_of_experience=faker.random_int(min=1, max=60),
+                academic_degrees=random.choice(ACADEMIC_DEGREES)
             )
             tchr.save()
             create_teachers.append(str(tchr))
