@@ -17,6 +17,8 @@ import debug_toolbar
 from django.contrib import admin
 from django.urls import include, path
 
+from core.views import index
+
 from groups.views import create_group, generate_groups, get_groups
 
 from students.views import create_student, generate_students, get_students, hello, update_student
@@ -27,7 +29,8 @@ from teachers.views import create_teacher, generate_teachers, get_teachers
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('hello/', hello),
-    
+    path('', index, name='index'),
+
 	path('generate_students/', generate_students),
     # path('students/', get_students),
     # path('students/create/', create_student),
