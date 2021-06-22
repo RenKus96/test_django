@@ -85,7 +85,7 @@ def create_student(request):
 
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('students_list'))
+            return HttpResponseRedirect(reverse('students:list'))
 
     return render(
         request=request,
@@ -97,8 +97,8 @@ def create_student(request):
 
 
 # @csrf_exempt
-def update_student(request, id_student):
-    student = Student.objects.get(id=id_student)
+def update_student(request, id):
+    student = Student.objects.get(id=id)
 
     if request.method == 'GET':
 
@@ -114,7 +114,7 @@ def update_student(request, id_student):
         if form.is_valid():
             form.save()
     #         return HttpResponseRedirect('/students/')
-            return HttpResponseRedirect(reverse('students_list'))
+            return HttpResponseRedirect(reverse('students:list'))
 
     # html_form = f"""
     # <form method="post">
