@@ -77,3 +77,26 @@ def create_group(request):
     """
     response = html_form
     return HttpResponse(response)
+
+@csrf_exempt
+def update_group(request, id):
+    group = Group.objects.get(id=id)
+    if request.method == 'GET':
+        form = GroupCreateForm(instance=group)
+    elif request.method == 'POST':
+        form = GroupCreateForm(
+            instance=group,
+            data=request.POST
+        )
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/groups/')
+
+    html_form = f"""
+    <form method="post">
+      {form.as_p()}
+      <input type="submit" value="Save">
+    </form>
+    """
+    response = html_form
+    return HttpResponse(response)

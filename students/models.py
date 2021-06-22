@@ -6,6 +6,7 @@ from django.db import models
 from faker import Faker
 
 from students.validators import adult_validator, AdultValidator, email_stop_list_validator
+from students.validators import phone_number_double_validator
 
 
 class Student(models.Model):
@@ -14,13 +15,16 @@ class Student(models.Model):
     ])
     first_name = models.CharField(max_length=50, null=False)
     age = models.IntegerField(default=42)
-    email = models.EmailField(max_length=120, null=True, validators=[
-        email_stop_list_validator
-    ])
     birthdate = models.DateField(
         default=datetime.date.today, validators=[adult_validator]
         # default=datetime.date.today, validators=[AdultValidator(21)]
     )
+    email = models.EmailField(max_length=120, null=True, validators=[
+        email_stop_list_validator
+    ])
+    phone_number = models.EmailField(max_length=20, null=True, validators=[
+        phone_number_double_validator
+    ])
     enroll_date = models.DateField(default=datetime.date.today)
     graduate_date = models.DateField(default=datetime.date.today)
     graduate_date2 = models.DateField(default=datetime.date.today)

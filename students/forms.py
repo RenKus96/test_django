@@ -37,6 +37,15 @@ class StudentBaseForm(ModelForm):
         result = self.normalize_name(last_name)
         return result
 
+    @staticmethod
+    def normalize_phone_number(value):
+        return value.lower().capitalize()
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data['phone_number']
+        result = self.normalize_phone_number(phone_number)
+        return result
+
     # def clean_birthdate(self):
     #     birthdate = self.cleaned_data['birthdate']
     #     age = datetime.datetime.now().year - birthdate.year

@@ -85,3 +85,26 @@ def create_teacher(request):
     """
     response = html_form
     return HttpResponse(response)
+
+@csrf_exempt
+def update_teacher(request, id):
+    teacher = Teacher.objects.get(id=id)
+    if request.method == 'GET':
+        form = TeacherCreateForm(instance=teacher)
+    elif request.method == 'POST':
+        form = TeacherCreateForm(
+            instance=teacher,
+            data=request.POST
+        )
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/teachers/')
+
+    html_form = f"""
+    <form method="post">
+      {form.as_p()}
+      <input type="submit" value="Save">
+    </form>
+    """
+    response = html_form
+    return HttpResponse(response)
