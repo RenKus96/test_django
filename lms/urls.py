@@ -23,18 +23,28 @@ from students.views import create_student, generate_students, get_students, hell
 
 from teachers.views import create_teacher, generate_teachers, get_teachers
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('hello/', hello),
-    path('generate_students/', generate_students),
-    path('students/', get_students),
-    path('students/create/', create_student),
-    path('students/update/', update_student),
-    path('groups/', get_groups),
+    
+	path('generate_students/', generate_students),
+    # path('students/', get_students),
+    # path('students/create/', create_student),
+    # path('students/update/<int:id>', update_student),
+    path('students/', include('students.urls')),
+
+	path('groups/', get_groups),
     path('groups/create/', create_group),
     path('generate_groups/', generate_groups),
-    path('teachers/', get_teachers),
+
+	path('teachers/', get_teachers),
     path('teachers/create/', create_teacher),
     path('generate_teachers/', generate_teachers),
-    path('__debug__/', include(debug_toolbar.urls)),    
+
+	path('__debug__/', include(debug_toolbar.urls)),    
+]
+
+urlpatterns += [
+    path('__debug__/', include(debug_toolbar.urls)),
 ]

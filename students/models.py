@@ -5,24 +5,26 @@ from django.db import models
 
 from faker import Faker
 
-from students.validators import adult_validator, email_stop_list_validator
+from students.validators import adult_validator, AdultValidator, email_stop_list_validator
 
 
 class Student(models.Model):
-    last_name = models.CharField(max_length=80, null=False, validators=[
-        MinLengthValidator(2)
+    last_name = models.CharField(
+        max_length=80, null=False, validators=[MinLengthValidator(2)
     ])
     first_name = models.CharField(max_length=50, null=False)
     age = models.IntegerField(default=42)
     email = models.EmailField(max_length=120, null=True, validators=[
         email_stop_list_validator
     ])
-    birthdate = models.DateField(default=datetime.date.today, validators=[
-        adult_validator
-    ])
+    birthdate = models.DateField(
+        default=datetime.date.today, validators=[adult_validator]
+        # default=datetime.date.today, validators=[AdultValidator(21)]
+    )
     enroll_date = models.DateField(default=datetime.date.today)
     graduate_date = models.DateField(default=datetime.date.today)
     graduate_date2 = models.DateField(default=datetime.date.today)
+
 
     def __str__(self):
         return f'{self.full_name()}, {self.birthdate}, {self.id}'

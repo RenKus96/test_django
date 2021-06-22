@@ -2,7 +2,6 @@ import datetime
 
 from django.core.exceptions import ValidationError
 
-ADULT_AGE_LIMIT = 18
 EMAIL_STOP_LIST = (
     'yandex.ru',
     'yandex.com',
@@ -19,10 +18,18 @@ EMAIL_STOP_LIST = (
 )
 
 
-def adult_validator(birthdate):
+def adult_validator(birthdate, adult_age_limit = 18):
     age = datetime.datetime.now().year - birthdate.year
-    if age < ADULT_AGE_LIMIT:
-        raise ValidationError('Age should be greater than 18 y.o.')
+    if age < adult_age_limit:
+        raise ValidationError(f'Age should be greater than {adult_age_limit} y.o.')
+
+
+class AdultValidator:
+    def __init__(self, age_limit):
+        self.age_limit = age_limit
+
+    def __call__(self, birthdate):
+        adult_validator(birthdate, self.age_limit)
 
 def email_stop_list_validator(email):
     if email.endswith(EMAIL_STOP_LIST):
