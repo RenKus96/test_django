@@ -1,4 +1,5 @@
 # import datetime
+import re
 
 from django.core.exceptions import ValidationError
 from django.forms import DateInput, ModelForm
@@ -15,6 +16,7 @@ class StudentBaseForm(ModelForm):
             'age',
             'birthdate',
             'email',
+            'phone_number',
             'enroll_date',
             'graduate_date',
         ]
@@ -23,28 +25,31 @@ class StudentBaseForm(ModelForm):
             'birthdate': DateInput(attrs={'type': 'date'})
         }
 
+
     @staticmethod
     def normalize_name(value):
         return value.lower().capitalize()
+
 
     def clean_first_name(self):
         first_name = self.cleaned_data['first_name']
         result = self.normalize_name(first_name)
         return result
 
+
     def clean_last_name(self):
         last_name = self.cleaned_data['last_name']
         result = self.normalize_name(last_name)
         return result
 
-    @staticmethod
-    def normalize_phone_number(value):
-        return value.lower().capitalize()
 
     def clean_phone_number(self):
-        phone_number = self.cleaned_data['phone_number']
-        result = self.normalize_phone_number(phone_number)
-        return result
+        result = re.sub('[^+0-9]','',self.cleaned_data['phone_number'])
+        try:
+            Student.objects.get(phone_number=result)
+        except Student.DoesNotExist:
+            return result
+        raise ValidationError('The phone number already exists. Please try another one.')
 
     # def clean_birthdate(self):
     #     birthdate = self.cleaned_data['birthdate']
@@ -53,6 +58,7 @@ class StudentBaseForm(ModelForm):
     #         raise ValidationError('Age should be greater than 18 y.o.')
     #
     #     return birthdate
+
 
     def clean(self):
         enroll_date = self.cleaned_data['enroll_date']

@@ -1,4 +1,5 @@
 # import datetime
+import re
 
 from django.core.exceptions import ValidationError
 from django.forms import DateInput, ModelForm
@@ -14,12 +15,14 @@ class TeacherBaseForm(ModelForm):
             'last_name',
             'birthdate',
             'email',
+            'phone_number',
             'years_of_experience',
             'academic_degrees'
         ]
         widgets = {
             'birthdate': DateInput(attrs={'type': 'date'})
         }
+
 
     @staticmethod
     def normalize_name(value):
@@ -36,6 +39,15 @@ class TeacherBaseForm(ModelForm):
         last_name = self.cleaned_data['last_name']
         result = self.normalize_name(last_name)
         return result
+
+
+    def clean_phone_number(self):
+        result = re.sub('[^+0-9]','',self.cleaned_data['phone_number'])
+        try:
+            Teacher.objects.get(phone_number=result)
+        except Teacher.DoesNotExist:
+            return result
+        raise ValidationError('The phone number already exists. Please try another one.')
 
 
 class TeacherCreateForm(TeacherBaseForm):

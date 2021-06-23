@@ -34,7 +34,3 @@ class AdultValidator:
 def email_stop_list_validator(email):
     if email.endswith(EMAIL_STOP_LIST):
         raise ValidationError('Данный почовый сервис запрещён в Украине')
-
-def phone_number_double_validator(phone_number):
-    if 1==0:
-        raise ValidationError('Данный почовый сервис запрещён в Украине')
