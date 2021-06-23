@@ -18,9 +18,10 @@ class Teacher(models.Model):
     last_name = models.CharField(max_length=80, null=False)
     first_name = models.CharField(max_length=50, null=False)
     birthdate = models.DateField(default=datetime.date.today)
-    email = models.EmailField(max_length=120, null=True, validators=[
-        email_stop_list_validator
-    ])
+    email = models.EmailField(
+        max_length=120, null=True, validators=[email_stop_list_validator]
+    )
+    phone_number = models.CharField(max_length=17, null=True)
     years_of_experience = models.IntegerField(default=0)
     academic_degrees = models.CharField(max_length=80, null=False)
 
