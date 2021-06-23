@@ -79,6 +79,7 @@ class StudentUpdateForm(StudentBaseForm):
             # 'age',
             'birthdate',
             'email',
+            'phone_number',
             'enroll_date',
             'graduate_date',
             'graduate_date2',
