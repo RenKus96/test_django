@@ -45,11 +45,10 @@ class StudentBaseForm(ModelForm):
 
     def clean_phone_number(self):
         result = re.sub('[^+0-9]','',self.cleaned_data['phone_number'])
-        try:
-            Student.objects.get(phone_number=result)
-        except Student.DoesNotExist:
-            return result
-        raise ValidationError('The phone number already exists. Please try another one.')
+        if Student.objects.filter(phone_number=result).exclude(id=self.instance.id).exists():
+            raise ValidationError('The phone number already exists. Please try another one.')
+        return result
+
 
     # def clean_birthdate(self):
     #     birthdate = self.cleaned_data['birthdate']
