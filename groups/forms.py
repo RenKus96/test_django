@@ -24,4 +24,6 @@ class GroupCreateForm(GroupBaseForm):
     pass
 
 
+class GroupUpdateForm(GroupBaseForm):
+    pass
 

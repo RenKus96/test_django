@@ -2,7 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render  # noqa
 
-from teachers.forms import TeacherCreateForm
+from teachers.forms import TeacherCreateForm, TeacherUpdateForm
 from teachers.models import Teacher
 from teachers.utils import format_records
 
@@ -90,9 +90,9 @@ def create_teacher(request):
 def update_teacher(request, id):
     teacher = Teacher.objects.get(id=id)
     if request.method == 'GET':
-        form = TeacherCreateForm(instance=teacher)
+        form = TeacherUpdateForm(instance=teacher)
     elif request.method == 'POST':
-        form = TeacherCreateForm(
+        form = TeacherUpdateForm(
             instance=teacher,
             data=request.POST
         )

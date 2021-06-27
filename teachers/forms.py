@@ -56,4 +56,6 @@ class TeacherCreateForm(TeacherBaseForm):
     pass
 
 
+class TeacherUpdateForm(TeacherBaseForm):
+    pass
 
