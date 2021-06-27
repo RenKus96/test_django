@@ -2,7 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render  # noqa
 
-from groups.forms import GroupCreateForm
+from groups.forms import GroupCreateForm, GroupUpdateForm
 from groups.models import Group
 from groups.utils import format_records
 
@@ -82,9 +82,9 @@ def create_group(request):
 def update_group(request, id):
     group = Group.objects.get(id=id)
     if request.method == 'GET':
-        form = GroupCreateForm(instance=group)
+        form = GroupUpdateForm(instance=group)
     elif request.method == 'POST':
-        form = GroupCreateForm(
+        form = GroupUpdateForm(
             instance=group,
             data=request.POST
         )

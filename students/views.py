@@ -102,11 +102,11 @@ def update_student(request, id):
 
     if request.method == 'GET':
 
-        form = StudentCreateForm(instance=student)
+        form = StudentUpdateForm(instance=student)
 
     elif request.method == 'POST':
 
-        form = StudentCreateForm(
+        form = StudentUpdateForm(
             instance=student,
             data=request.POST
         )
