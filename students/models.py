@@ -15,8 +15,8 @@ class Student(models.Model):
     first_name = models.CharField(max_length=50, null=False)
     age = models.IntegerField(default=42)
     birthdate = models.DateField(
-        default=datetime.date.today, validators=[adult_validator]
-        # default=datetime.date.today, validators=[AdultValidator(21)]
+        # default=datetime.date.today, validators=[adult_validator]
+        default=datetime.date.today, validators=[AdultValidator(21)]
     )
     email = models.EmailField(max_length=120, null=True, validators=[
         email_stop_list_validator
