@@ -1,6 +1,7 @@
+from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render  # noqa
+from django.shortcuts import render, get_object_or_404  # noqa
 
 from groups.forms import GroupCreateForm, GroupUpdateForm
 from groups.models import Group
@@ -43,24 +44,16 @@ def get_groups(request, args):
     for param_name, param_value in args.items():
         if param_value:
             groups = groups.filter(**{param_name: param_value})
-    html_form = """
-       <form method="get">
-        <label>Group number:</label>
-        <input type="number" name="group_number"><br><br>
-
-        <label >Academic subject:</label>
-        <input type="text" name="academic_subject"><br><br>
-
-        <input type="submit" value="Search">
-       </form>
-    """
-    records = format_records(groups)
-    response = html_form + records
-
-    return HttpResponse(response)
+    return render(
+        request=request,
+        template_name='groups/list.html',
+        context={
+            'groups': groups
+        }
+    )
 
 
-@csrf_exempt
+#@csrf_exempt
 def create_group(request):
     if request.method == 'GET':
         form = GroupCreateForm()
@@ -68,17 +61,16 @@ def create_group(request):
         form = GroupCreateForm(data=request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/groups/')
-    html_form = f"""
-    <form method="post">
-      {form.as_p()}
-      <input type="submit" value="Create">
-    </form>
-    """
-    response = html_form
-    return HttpResponse(response)
+            return HttpResponseRedirect(reverse('groups:list'))
+    return render(
+        request=request,
+        template_name='groups/create.html',
+        context={
+            'form': form
+        }
+    )
 
-@csrf_exempt
+#@csrf_exempt
 def update_group(request, id):
     group = Group.objects.get(id=id)
     if request.method == 'GET':
@@ -90,13 +82,26 @@ def update_group(request, id):
         )
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/groups/')
+            return HttpResponseRedirect(reverse('groups:list'))
+    return render(
+        request=request,
+        template_name='groups/update.html',
+        context={
+            'form': form
+        }
+    )
 
-    html_form = f"""
-    <form method="post">
-      {form.as_p()}
-      <input type="submit" value="Save">
-    </form>
-    """
-    response = html_form
-    return HttpResponse(response)
+
+def delete_group(request, pk):
+    group = get_object_or_404(Group, id=pk)
+    if request.method == 'POST':
+        group.delete()
+        return HttpResponseRedirect(reverse('groups:list'))
+
+    return render(
+        request=request,
+        template_name='groups/delete.html',
+        context={
+            'group': group
+        }
+    )
