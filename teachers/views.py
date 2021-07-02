@@ -1,6 +1,7 @@
+from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render  # noqa
+from django.shortcuts import render, get_object_or_404  # noqa
 
 from teachers.forms import TeacherCreateForm, TeacherUpdateForm
 from teachers.models import Teacher
@@ -35,10 +36,6 @@ def generate_teachers(request, count):
     "birthdate": fields.Date(
         required=False
     ),
-    # "years_of_experience": fields.Int(
-    #     required=False,
-    #     validate=[validate.Range(min=1, max=60)]
-    # ),
     "academic_degrees": fields.Str(
         required=False
     )},
@@ -49,26 +46,15 @@ def get_teachers(request, args):
     for param_name, param_value in args.items():
         if param_value:
             teachers = teachers.filter(**{param_name: param_value})
-    html_form = """
-       <form method="get">
-        <label >First name:</label>
-        <input type="text" name="first_name"><br><br>
+    return render(
+        request=request,
+        template_name='teachers/list.html',
+        context={
+            'teachers': teachers
+        }
+    )
 
-        <label >Last name:</label>
-        <input type="text" name="last_name"><br><br>
-
-        <label >Academic degrees:</label>
-        <input type="text" name="academic_degrees"><br><br>
-
-        <input type="submit" value="Search">
-       </form>
-    """
-    records = format_records(teachers)
-    response = html_form + records
-
-    return HttpResponse(response)
-
-@csrf_exempt
+#@csrf_exempt
 def create_teacher(request):
     if request.method == 'GET':
         form = TeacherCreateForm()
@@ -76,19 +62,20 @@ def create_teacher(request):
         form = TeacherCreateForm(data=request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/teachers/')
-    html_form = f"""
-    <form method="post">
-      {form.as_p()}
-      <input type="submit" value="Create">
-    </form>
-    """
-    response = html_form
-    return HttpResponse(response)
+            return HttpResponseRedirect(reverse('teachers:list'))
+    return render(
+        request=request,
+        template_name='teachers/create.html',
+        context={
+            'form': form
+        }
+    )
 
-@csrf_exempt
+
+#@csrf_exempt
 def update_teacher(request, id):
-    teacher = Teacher.objects.get(id=id)
+    # teacher = Teacher.objects.get(id=id)
+    teacher = get_object_or_404(Teacher, id=id)
     if request.method == 'GET':
         form = TeacherUpdateForm(instance=teacher)
     elif request.method == 'POST':
@@ -98,13 +85,26 @@ def update_teacher(request, id):
         )
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/teachers/')
+            return HttpResponseRedirect(reverse('teachers:list'))
+    return render(
+        request=request,
+        template_name='teachers/update.html',
+        context={
+            'form': form
+        }
+    )
 
-    html_form = f"""
-    <form method="post">
-      {form.as_p()}
-      <input type="submit" value="Save">
-    </form>
-    """
-    response = html_form
-    return HttpResponse(response)
+
+def delete_teacher(request, pk):
+    teacher = get_object_or_404(Teacher, id=pk)
+    if request.method == 'POST':
+        teacher.delete()
+        return HttpResponseRedirect(reverse('teachers:list'))
+
+    return render(
+        request=request,
+        template_name='teachers/delete.html',
+        context={
+            'teacher': teacher
+        }
+    )

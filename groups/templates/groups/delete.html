@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Delete group</title>
+{% endblock %}
+
+{% block operation %}
+<h2 style="text-align:center">Delete group</h2>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <p>Do you really remove Groupe № {{ group.group_number }} "{{ group.academic_subject }}"?</p>
+    <input class="btn btn-danger" type="submit" value="Agree">
+    <a class="btn btn-primary" href="{% url 'groups:list' %}">Cancel</a>
+</form>
+{% endblock %}

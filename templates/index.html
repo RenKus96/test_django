@@ -1,5 +1,8 @@
 {%extends 'base.html' %}
 
 {%block content%}
-    <a href="{%url 'students:list'%}">Students list</a>
+    <h2>List of:</h2>
+    <a href="{%url 'students:list'%}">1. Students</a><br>
+    <a href="{%url 'teachers:list'%}">2. Teachers</a><br>
+    <a href="{%url 'groups:list'%}">3. Groups</a><br>
 {%endblock%}

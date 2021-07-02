@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Groups list</title>
+{% endblock %}
+
+{% block operation %}
+<h2 style="text-align:center">Groups list</h2>
+{% endblock %}
+
+{% block content %}
+    <form method="get">
+        <label>Group number:</label>
+        <input type="number" name="group_number"><br><br>
+        <label >Academic subject:</label>
+        <input type="text" name="academic_subject"><br><br>
+        <input type="submit" value="Search"><br>
+    </form>
+
+    <p><strong>Count of groups: {{ groups.count }}</strong></p>
+
+    <table class="table table-hover table-sm">
+        <tr>
+            <th></th>
+            <th>Group №</th>
+            <th>Academic subject</th>
+            <th>Date of creation</th>
+            <th>Number of students</th>
+            <th><i class="bi bi-pencil-fill"></i></th>
+            <th>🚮</th>
+        </tr>
+        {% for group in groups %}
+        <tr>
+            <td><b>{{ forloop.counter }}</b></td>
+            <td>{{ group.group_number }}</td>
+            <td>{{ group.academic_subject }}</td>
+            <td>{{ group.date_of_creation }}</td>
+            <td>{{ group.number_of_students }}</td>
+            <td><a href="{% url 'groups:update' group.id %}">EDIT</a></td>
+            <td><a href="{% url 'groups:delete' group.id %}">DELETE</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

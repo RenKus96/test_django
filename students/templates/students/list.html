@@ -22,6 +22,10 @@
 <!--}-->
 <!--{% endblock %}-->
 
+{% block operation %}
+<h2 style="text-align:center">Students list</h2>
+{% endblock %}
+
 {% block content %}
     <form method="get">
         <label >First name:</label>
@@ -33,7 +37,7 @@
         <label>Age:</label>
         <input type="number" name="age"><br><br>
 
-        <input type="submit" value="Search">
+        <input type="submit" value="Search"><br>
     </form>
 
     <p><strong>Count of students: {{ students.count }}</strong></p>
@@ -50,7 +54,7 @@
         </tr>
         {% for student in students %}
         <tr>
-            <td>{{ forloop.counter }}</td>
+            <td><b>{{ forloop.counter }}</b></td>
             <td>{{ student.first_name }}</td>
             <td>{{ student.last_name }}</td>
             <td>{{ student.email }}</td>
@@ -60,7 +64,4 @@
         </tr>
         {% endfor %}
     </table>
-
-
-
 {% endblock %}
