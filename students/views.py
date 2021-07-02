@@ -98,7 +98,8 @@ def create_student(request):
 
 # @csrf_exempt
 def update_student(request, id):
-    student = Student.objects.get(id=id)
+    # student = Student.objects.get(id=id)
+    student = get_object_or_404(Student, id=id)
 
     if request.method == 'GET':
 

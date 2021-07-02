@@ -72,7 +72,8 @@ def create_group(request):
 
 #@csrf_exempt
 def update_group(request, id):
-    group = Group.objects.get(id=id)
+    # group = Group.objects.get(id=id)
+    group = get_object_or_404(Group, id=id)
     if request.method == 'GET':
         form = GroupUpdateForm(instance=group)
     elif request.method == 'POST':

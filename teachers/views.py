@@ -74,7 +74,8 @@ def create_teacher(request):
 
 #@csrf_exempt
 def update_teacher(request, id):
-    teacher = Teacher.objects.get(id=id)
+    # teacher = Teacher.objects.get(id=id)
+    teacher = get_object_or_404(Teacher, id=id)
     if request.method == 'GET':
         form = TeacherUpdateForm(instance=teacher)
     elif request.method == 'POST':
