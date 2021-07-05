@@ -16,9 +16,8 @@
         <input type="text" name="last_name"><br><br>
         <label >Academic degrees:</label>
         <input type="text" name="academic_degrees"><br><br>
-        <input type="submit" value="Search"><br>
+        <input class="btn btn-success mb-2 mt-2" type="submit" value="Search"><br>
     </form>
-
 
     <p><strong>Count of teachers: <font size="5">{{ teachers.count }}</font></strong></p>
 
@@ -39,8 +38,8 @@
             <td>{{ teacher.first_name }}</td>
             <td>{{ teacher.last_name }}</td>
             <td>{{ teacher.email }}</td>
-            <td><a href="{% url 'teachers:update' teacher.id %}">EDIT</a></td>
-            <td><a href="{% url 'teachers:delete' teacher.id %}">DELETE</a></td>
+            <td><a class="btn btn-outline-primary btn-sm" href="{% url 'teachers:update' teacher.id %}">EDIT</a></td>
+            <td><a class="btn btn-outline-danger btn-sm" href="{% url 'teachers:delete' teacher.id %}">DELETE</a></td>
         </tr>
         {% endfor %}
     </table>

@@ -40,10 +40,11 @@ INSTALLED_APPS = [
 
     'django_extensions',
     'debug_toolbar',
+    'crispy_forms',
 
     'students',
     'teachers',
-    'groups'
+    'groups',
 ]
 
 MIDDLEWARE = [

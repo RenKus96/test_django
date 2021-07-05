@@ -14,7 +14,7 @@
         <input type="number" name="group_number"><br><br>
         <label >Academic subject:</label>
         <input type="text" name="academic_subject"><br><br>
-        <input type="submit" value="Search"><br>
+        <input class="btn btn-success mb-2 mt-2" type="submit" value="Search"><br>
     </form>
 
     <p><strong>Count of groups: <font size="5">{{ groups.count }}</font></strong></p>
@@ -36,8 +36,8 @@
             <td>{{ group.academic_subject }}</td>
             <td>{{ group.date_of_creation }}</td>
             <td>{{ group.number_of_students }}</td>
-            <td><a href="{% url 'groups:update' group.id %}">EDIT</a></td>
-            <td><a href="{% url 'groups:delete' group.id %}">DELETE</a></td>
+            <td><a class="btn btn-outline-primary btn-sm" href="{% url 'groups:update' group.id %}">EDIT</a></td>
+            <td><a class="btn btn-outline-danger btn-sm" href="{% url 'groups:delete' group.id %}">DELETE</a></td>
         </tr>
         {% endfor %}
     </table>
