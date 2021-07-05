@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django.forms import DateInput, ModelForm
 
 from students.models import Student
+import django_filters
 
 
 class StudentBaseForm(ModelForm):
@@ -87,3 +88,13 @@ class StudentUpdateForm(StudentBaseForm):
             'graduate_date',
             'graduate_date2',
         ]
+
+
+class StudentsFilter(django_filters.FilterSet):
+    class Meta:
+        model = Student
+        fields = {
+            'age': ['lt', 'gt'],
+            'first_name': ['exact', 'icontains'],
+            'last_name': ['exact', 'startswith'],
+        }

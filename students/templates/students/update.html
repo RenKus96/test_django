@@ -1,5 +1,7 @@
 {%extends 'base.html' %}
 
+{% load crispy_forms_tags %}
+
 {%block title%}
     <title>Update student</title>
 {%endblock%}
@@ -8,11 +10,11 @@
 <h2 style="text-align:center">Update student</h2>
 {% endblock %}
 
-{%block content%}
+{% block content %}
     <form method="post">
         {% csrf_token %}
-        {{form.as_p}}
+        {{ form | crispy }}
         <input class="btn btn-success mb-2 mt-2" type="submit" value="Update">
         <a class="btn btn-primary" href="{% url 'students:list' %}">Cancel</a>
     </form>
-{%endblock%}
+{% endblock %}
