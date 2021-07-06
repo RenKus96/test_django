@@ -1,11 +1,12 @@
 # import datetime
+# from dateutil.relativedelta import relativedelta
 import re
 
 from django.core.exceptions import ValidationError
 from django.forms import DateInput, ModelForm
+import django_filters
 
 from students.models import Student
-import django_filters
 
 
 class StudentBaseForm(ModelForm):
@@ -20,6 +21,7 @@ class StudentBaseForm(ModelForm):
             'phone_number',
             'enroll_date',
             'graduate_date',
+            'group',
         ]
         # fields = '__all__'
         widgets = {
@@ -80,13 +82,14 @@ class StudentUpdateForm(StudentBaseForm):
         fields = [
             'first_name',
             'last_name',
-            # 'age',
+            'age',
             'birthdate',
             'email',
             'phone_number',
             'enroll_date',
             'graduate_date',
             'graduate_date2',
+            'group',
         ]
 
 
@@ -97,4 +100,5 @@ class StudentsFilter(django_filters.FilterSet):
             'age': ['lt', 'gt'],
             'first_name': ['exact', 'icontains'],
             'last_name': ['exact', 'startswith'],
+            'group': ['exact'],
         }

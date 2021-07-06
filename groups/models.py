@@ -25,7 +25,7 @@ class Group(models.Model):
 
     def __str__(self):
         return f'№{self.group_number}, Курс: "{self.academic_subject}", \
-            Дата создания:{self.date_of_creation}, \
+            Дата создания: {self.date_of_creation}, \
             Кол-во студентов: {self.number_of_students}'
 
     @staticmethod

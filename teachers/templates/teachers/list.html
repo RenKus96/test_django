@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block title %}
 <title>Teachers list</title>
 {% endblock %}
@@ -10,16 +12,19 @@
 
 {% block content %}
     <form method="get">
-        <label >First name:</label>
+        <!-- <label >First name:</label>
         <input type="text" name="first_name"><br><br>
         <label >Last name:</label>
         <input type="text" name="last_name"><br><br>
         <label >Academic degrees:</label>
-        <input type="text" name="academic_degrees"><br><br>
+        <input type="text" name="academic_degrees"><br><br> -->
+
+        {{ obj_filter.form | crispy }}
+
         <input class="btn btn-success mb-2 mt-2" type="submit" value="Search"><br>
     </form>
 
-    <p><strong>Count of teachers: <font size="5">{{ teachers.count }}</font></strong></p>
+    <p><strong>Count of teachers: <font size="5">{{ obj_filter.qs.count }}</font></strong></p>
 
     <table class="table table-hover table-sm">
         <tr>
@@ -28,16 +33,22 @@
             <th>First name</th>
             <th>Last name</th>
             <th>Email</th>
+            <th>Group</th>
             <th><i class="bi bi-pencil-fill"></i></th>
             <th>🚮</th>
         </tr>
-        {% for teacher in teachers %}
+        {% for teacher in obj_filter.qs %}
         <tr>
             <td><b>{{ forloop.counter }}</b></td>
             <td>{{ teacher.academic_degrees }}</td>
             <td>{{ teacher.first_name }}</td>
             <td>{{ teacher.last_name }}</td>
             <td>{{ teacher.email }}</td>
+            {% if teacher.group %}    
+                <td>№{{ teacher.group.group_number }} Created: {{ teacher.group.date_of_creation }}</td>
+            {% else %}
+                <td></td>
+            {% endif%}
             <td><a class="btn btn-outline-primary btn-sm" href="{% url 'teachers:update' teacher.id %}">EDIT</a></td>
             <td><a class="btn btn-outline-danger btn-sm" href="{% url 'teachers:delete' teacher.id %}">DELETE</a></td>
         </tr>

@@ -1,11 +1,11 @@
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
-from django.views.decorators.csrf import csrf_exempt
+# from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, get_object_or_404  # noqa
 
-from groups.forms import GroupCreateForm, GroupUpdateForm
+from groups.forms import GroupCreateForm, GroupUpdateForm, GroupsFilter
 from groups.models import Group
-from groups.utils import format_records
+# from groups.utils import format_records
 
 from webargs import fields, validate
 from webargs.djangoparser import use_args, use_kwargs
@@ -41,14 +41,16 @@ def generate_groups(request, count):
 )
 def get_groups(request, args):
     groups = Group.objects.all()
-    for param_name, param_value in args.items():
-        if param_value:
-            groups = groups.filter(**{param_name: param_value})
+    # for param_name, param_value in args.items():
+    #     if param_value:
+    #         groups = groups.filter(**{param_name: param_value})
+    obj_filter = GroupsFilter(data=request.GET, queryset=groups)
     return render(
         request=request,
         template_name='groups/list.html',
         context={
-            'groups': groups
+            # 'groups': groups,
+            'obj_filter': obj_filter,
         }
     )
 

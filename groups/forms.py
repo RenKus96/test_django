@@ -2,6 +2,7 @@
 
 from django.core.exceptions import ValidationError
 from django.forms import DateInput, ModelForm
+import django_filters
 
 from groups.models import Group
 
@@ -27,3 +28,11 @@ class GroupCreateForm(GroupBaseForm):
 class GroupUpdateForm(GroupBaseForm):
     pass
 
+
+class GroupsFilter(django_filters.FilterSet):
+    class Meta:
+        model = Group
+        fields = {
+            'group_number': ['exact'],
+            'academic_subject': ['exact', 'icontains'],
+        }

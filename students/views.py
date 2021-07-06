@@ -46,9 +46,9 @@ def get_students(request, args):
     # Students = 42
     students = Student.objects.all()
 
-    for param_name, param_value in args.items():
-        if param_value:
-            students = students.filter(**{param_name: param_value})
+    # for param_name, param_value in args.items():
+    #     if param_value:
+    #         students = students.filter(**{param_name: param_value})
 
     obj_filter = StudentsFilter(data=request.GET, queryset=students)
 
@@ -56,7 +56,7 @@ def get_students(request, args):
         request=request,
         template_name='students/list.html',
         context={
-            'students': students,
+            # 'students': students,
             'obj_filter': obj_filter,
         }
     )

@@ -3,6 +3,7 @@ import re
 
 from django.core.exceptions import ValidationError
 from django.forms import DateInput, ModelForm
+import django_filters
 
 from teachers.models import Teacher
 
@@ -17,7 +18,8 @@ class TeacherBaseForm(ModelForm):
             'email',
             'phone_number',
             'years_of_experience',
-            'academic_degrees'
+            'academic_degrees',
+            'group',
         ]
         widgets = {
             'birthdate': DateInput(attrs={'type': 'date'})
@@ -59,3 +61,13 @@ class TeacherCreateForm(TeacherBaseForm):
 class TeacherUpdateForm(TeacherBaseForm):
     pass
 
+
+class TeachersFilter(django_filters.FilterSet):
+    class Meta:
+        model = Teacher
+        fields = {
+            'first_name': ['exact', 'startswith'],
+            'last_name': ['exact', 'startswith'],
+            'academic_degrees': ['exact', 'startswith'],
+            'group': ['exact'],
+        }
