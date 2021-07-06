@@ -1,12 +1,13 @@
 import datetime
+from dateutil.relativedelta import relativedelta
 
 from django.core.validators import MinLengthValidator
 from django.db import models
 
 from faker import Faker
 
-from students.validators import adult_validator, AdultValidator, email_stop_list_validator
-
+from students.validators import AdultValidator, email_stop_list_validator
+from groups.models import Group
 
 class Student(models.Model):
     last_name = models.CharField(
@@ -25,10 +26,10 @@ class Student(models.Model):
     enroll_date = models.DateField(default=datetime.date.today)
     graduate_date = models.DateField(default=datetime.date.today)
     graduate_date2 = models.DateField(default=datetime.date.today)
-
+    group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, related_name='students')
 
     def __str__(self):
-        return f'{self.full_name()}, {self.birthdate}, {self.id}'
+        return f'{self.full_name()}, {self.birthdate}, {self.id}, {self.group}'
 
     def full_name(self):
         return f'{self.first_name}, {self.last_name}'
@@ -47,6 +48,7 @@ class Student(models.Model):
                     end_date='-18y'
                 )
             )
+            st.age = relativedelta(datetime.date.today(), st.birthdate).years
             st.save()
             create_students.append(str(st))
         return create_students

@@ -24,7 +24,7 @@ def adult_validator(birthdate, adult_age_limit = 18):
         raise ValidationError(f'Age should be greater than {adult_age_limit} y.o.')
 
 
-class AdultValidator:
+class AdultValidator(int):
     def __init__(self, age_limit):
         self.age_limit = age_limit
 
