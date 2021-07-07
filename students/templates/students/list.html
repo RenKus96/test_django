@@ -2,9 +2,8 @@
 
 {% load crispy_forms_tags %}
 
-{% block title %}
-<title>Students list</title>
-{% endblock %}
+{% block title %}Students list{% endblock %}
+{% block header %}Students list{% endblock%}
 
 <!--{% block custom_css %}-->
 <!--table {-->
@@ -25,7 +24,7 @@
 <!--{% endblock %}-->
 
 {% block operation %}
-<h2 style="text-align:center">Students list</h2>
+<!-- <h2 style="text-align:center">Students list</h2> -->
 {% endblock %}
 
 {% block content %}
@@ -64,11 +63,7 @@
             <td>{{ student.last_name }}</td>
             <td>{{ student.email }}</td>
             <td>{{ student.age }}</td>
-            {% if student.group %}    
-                <td>№{{ student.group.group_number }} Created: {{ student.group.date_of_creation }}</td>
-            {% else %}
-                <td></td>
-            {% endif%}
+            <td>{% if student.group %}№{{ student.group.group_number }} Created: {{ student.group.date_of_creation }}{% endif %}</td>
             <td><a class="btn btn-outline-primary btn-sm" href="{% url 'students:update' student.id %}">EDIT</a></td>
             <td><a class="btn btn-outline-danger btn-sm" href="{% url 'students:delete' student.id %}">DELETE</a></td>
         </tr>
