@@ -1,11 +1,11 @@
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
-from django.views.decorators.csrf import csrf_exempt
+# from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, get_object_or_404  # noqa
 
-from teachers.forms import TeacherCreateForm, TeacherUpdateForm
+from teachers.forms import TeacherCreateForm, TeacherUpdateForm, TeachersFilter
 from teachers.models import Teacher
-from teachers.utils import format_records
+# from teachers.utils import format_records
 
 from webargs import fields, validate
 from webargs.djangoparser import use_args, use_kwargs
@@ -43,14 +43,16 @@ def generate_teachers(request, count):
 )
 def get_teachers(request, args):
     teachers = Teacher.objects.all()
-    for param_name, param_value in args.items():
-        if param_value:
-            teachers = teachers.filter(**{param_name: param_value})
+    # for param_name, param_value in args.items():
+    #     if param_value:
+    #         teachers = teachers.filter(**{param_name: param_value})
+    obj_filter = TeachersFilter(data=request.GET, queryset=teachers)
     return render(
         request=request,
         template_name='teachers/list.html',
         context={
-            'teachers': teachers
+            # 'teachers': teachers,
+            'obj_filter': obj_filter,
         }
     )
 
