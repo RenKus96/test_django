@@ -42,7 +42,7 @@ def generate_teachers(request, count):
     location="query"
 )
 def get_teachers(request, args):
-    teachers = Teacher.objects.all()
+    teachers = Teacher.objects.all().select_related('group')
     # for param_name, param_value in args.items():
     #     if param_value:
     #         teachers = teachers.filter(**{param_name: param_value})

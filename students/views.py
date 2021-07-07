@@ -44,7 +44,7 @@ def generate_students(request, count):
 )
 def get_students(request, args):
     # Students = 42
-    students = Student.objects.all()
+    students = Student.objects.all().select_related('group')
 
     # for param_name, param_value in args.items():
     #     if param_value:
