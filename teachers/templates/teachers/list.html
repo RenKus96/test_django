@@ -2,12 +2,11 @@
 
 {% load crispy_forms_tags %}
 
-{% block title %}
-<title>Teachers list</title>
-{% endblock %}
+{% block title %}Teachers list{% endblock %}
+{% block header %}Teachers list{% endblock %}
 
 {% block operation %}
-<h2 style="text-align:center">Teachers list</h2>
+<!-- <h2 style="text-align:center">Teachers list</h2> -->
 {% endblock %}
 
 {% block content %}
@@ -44,11 +43,7 @@
             <td>{{ teacher.first_name }}</td>
             <td>{{ teacher.last_name }}</td>
             <td>{{ teacher.email }}</td>
-            {% if teacher.group %}    
-                <td>№{{ teacher.group.group_number }} Created: {{ teacher.group.date_of_creation }}</td>
-            {% else %}
-                <td></td>
-            {% endif%}
+            <td>{% if teacher.group %}№{{ teacher.group.group_number }} Created: {{ teacher.group.date_of_creation }}{% endif %}</td>
             <td><a class="btn btn-outline-primary btn-sm" href="{% url 'teachers:update' teacher.id %}">EDIT</a></td>
             <td><a class="btn btn-outline-danger btn-sm" href="{% url 'teachers:delete' teacher.id %}">DELETE</a></td>
         </tr>
