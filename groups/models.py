@@ -18,10 +18,13 @@ GROUP_SUBJECT = [
 
 # Create your models here.
 class Group(models.Model):
+    create_datetime = models.DateTimeField(auto_now_add=True)
+    update_datetime = models.DateTimeField(auto_now=True)
     group_number = models.IntegerField(null=False)
     academic_subject = models.CharField(max_length=80, null=False)
     date_of_creation = models.DateField(default=datetime.date.today)
-    number_of_students = models.IntegerField(default=1)
+    number_of_students = models.IntegerField(default=0)
+
 
     def __str__(self):
         return f'№{self.group_number}, Курс: "{self.academic_subject}", \
