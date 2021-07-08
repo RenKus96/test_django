@@ -102,7 +102,7 @@ class StudentsFilter(django_filters.FilterSet):
     class Meta:
         model = Student
         fields = {
-            'age': ['lt', 'gt'],
+            'age': ['gt', 'lt',],
             'first_name': ['exact', 'icontains'],
             'last_name': ['exact', 'startswith'],
             'group': ['exact'],

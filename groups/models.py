@@ -25,12 +25,20 @@ class Group(models.Model):
     date_of_creation = models.DateField(default=datetime.date.today)
     end_date = models.DateField(null=True, blank=True)
     number_of_students = models.IntegerField(default=0)
+    headman = models.OneToOneField(
+        # Student,
+        'students.Student',
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='headed_group'
+    )
 
 
     def __str__(self):
-        return f'№{self.group_number}, Курс: "{self.academic_subject}", \
-            Дата создания: {self.date_of_creation}, \
-            Кол-во студентов: {self.number_of_students}'
+        # return f'№{self.group_number}, Курс: "{self.academic_subject}", \
+        #     Дата создания: {self.date_of_creation}, \
+        #     Кол-во студентов: {self.number_of_students}'
+        return f'Group №{self.group_number} Created: {self.date_of_creation}'
 
     @staticmethod
     def generate_groups(count):

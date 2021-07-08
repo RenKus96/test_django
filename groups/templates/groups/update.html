@@ -16,7 +16,10 @@
         <input class="btn btn-success mb-2 mt-2" type="submit" value="Update">
         <a class="btn btn-primary" href="{% url 'groups:list' %}">Cancel</a>
     </form>
-    <table class="table table-hover table-sm">
+    {% with list_objects=group.students.all %}
+        {% include 'includes/students_list_table.html' %}
+    {% endwith %}
+    <!-- <table class="table table-hover table-sm">
         <tr>
             <th></th>
             <th>First name</th>
@@ -27,7 +30,7 @@
             <th>🚮</th>
         </tr>
         {% for student in group.students.all %}
-        <!--Если во вьюшке определить 'students': group.students.all(), то можно обратиться просто "for student in students"-->
+        Если во вьюшке определить 'students': group.students.all(), то можно обратиться просто "for student in students"
         <tr>
             <td><b>{{ forloop.counter }}</b></td>
             <td>{{ student.first_name }}</td>
@@ -38,5 +41,5 @@
             <td><a class="btn btn-outline-danger btn-sm" href="{% url 'students:delete' student.id %}">DELETE</a></td>
         </tr>
         {% endfor %}
-    </table>
+    </table> -->
 {% endblock %}
