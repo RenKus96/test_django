@@ -90,7 +90,9 @@ def update_group(request, id):
         request=request,
         template_name='groups/update.html',
         context={
-            'form': form
+            'form': form,
+            'group': group,
+            # 'students': group.students.all(),
         }
     )
 

@@ -10,19 +10,23 @@ from groups.models import Group
 class GroupBaseForm(ModelForm):
     class Meta:
         model = Group
-        fields = [
-            'group_number',
-            'academic_subject',
-            'date_of_creation',
-            'number_of_students'
-        ]
-        # widgets = {
-        #     'date_of_creation': DateInput(attrs={'type': 'date'})
-        # }
+        # fields = [
+        #     'group_number',
+        #     'academic_subject',
+        #     'date_of_creation',
+        #     'end_date',
+        #     'number_of_students',
+        # ]
+        fields = '__all__'
+        widgets = {
+            'date_of_creation': DateInput(attrs={'type': 'date'}),
+            'end_date': DateInput(attrs={'type': 'date'}),
+        }
 
 
 class GroupCreateForm(GroupBaseForm):
-    pass
+    class Meta(GroupBaseForm.Meta):
+        exclude = ['end_date']
 
 
 class GroupUpdateForm(GroupBaseForm):

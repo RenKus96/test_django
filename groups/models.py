@@ -23,6 +23,7 @@ class Group(models.Model):
     group_number = models.IntegerField(null=False)
     academic_subject = models.CharField(max_length=80, null=False)
     date_of_creation = models.DateField(default=datetime.date.today)
+    end_date = models.DateField(null=True, blank=True)
     number_of_students = models.IntegerField(default=0)
 
 
