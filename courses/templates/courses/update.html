@@ -1,0 +1,15 @@
+{%extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Update course{% endblock %}
+{% block header %}Update course{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form | crispy }}
+        <input class="btn btn-success mb-2 mt-2" type="submit" value="Update">
+        <a class="btn btn-primary" href="{% url 'courses:list' %}">Cancel</a>
+    </form>
+{% endblock %}

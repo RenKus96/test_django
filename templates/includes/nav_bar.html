@@ -16,6 +16,9 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'groups:list' %}">Groups</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'courses:list' %}">Courses</a>
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Create
@@ -24,6 +27,7 @@
             <li><a class="dropdown-item" href="{% url 'students:create' %}">Student</a></li>
             <li><a class="dropdown-item" href="{% url 'teachers:create' %}">Teacher</a></li>
             <li><a class="dropdown-item" href="{% url 'groups:create' %}">Group</a></li>
+            <li><a class="dropdown-item" href="{% url 'courses:create' %}">Course</a></li>
             <!-- <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="#">Something else here</a></li> -->
           </ul>

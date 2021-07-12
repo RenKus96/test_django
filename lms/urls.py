@@ -17,9 +17,13 @@ from django.contrib import admin
 from django.urls import include, path
 
 from core.views import index
-from groups.views import create_group, generate_groups, get_groups, update_group
-from students.views import create_student, generate_students, get_students, hello, update_student
-from teachers.views import create_teacher, generate_teachers, get_teachers, update_teacher
+# from groups.views import create_group, generate_groups, get_groups, update_group
+# from students.views import create_student, generate_students, get_students, hello, update_student
+# from teachers.views import create_teacher, generate_teachers, get_teachers, update_teacher
+from groups.views import generate_groups
+from students.views import generate_students, hello
+from teachers.views import generate_teachers
+from courses.views import generate_courses
 
 import debug_toolbar
 
@@ -46,6 +50,9 @@ urlpatterns = [
     # path('teachers/create/', create_teacher),
     # path('teachers/update/<int:id>', update_teacher),
     path('teachers/', include('teachers.urls')),
+
+    path('generate_courses/', generate_courses),
+    path('courses/', include('courses.urls')),
 
 	path('__debug__/', include(debug_toolbar.urls)),    
 ]

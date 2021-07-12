@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete course{% endblock %}
+{% block header %}Delete course{% endblock %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <p>Do you really remove Course "{{ course.academic_subject }}"?</p>
+    <input class="btn btn-danger" type="submit" value="Agree">
+    <a class="btn btn-primary" href="{% url 'courses:list' %}">Cancel</a>
+</form>
+{% endblock %}

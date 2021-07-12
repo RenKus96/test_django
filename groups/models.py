@@ -32,6 +32,12 @@ class Group(models.Model):
         null=True,
         related_name='headed_group'
     )
+    course = models.OneToOneField(
+        'courses.Course',
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='course_group'
+    )
 
 
     def __str__(self):
