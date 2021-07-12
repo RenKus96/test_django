@@ -27,6 +27,15 @@ class Student(Person):
     def _generate(cls):
         obj = super()._generate()
         obj.save()
+        return obj
+
+
+    @classmethod
+    def generate(cls, count):
+        create_students = []
+        for _ in range(count):
+            create_students.append(str(cls._generate()))
+        return create_students
 
 
     @staticmethod

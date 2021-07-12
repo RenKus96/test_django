@@ -21,7 +21,8 @@ from webargs.djangoparser import use_args, use_kwargs
 )
 def generate_teachers(request, count):
     out_str = f'Сгенерировано <b>{count}</b> преподавателей:<br>'
-    for num, teacher in enumerate(Teacher.generate_teachers(count), 1):
+    # for num, teacher in enumerate(Teacher.generate_teachers(count), 1):
+    for num, teacher in enumerate(Teacher.generate(count), 1):
         out_str += f'<b>{num}.</b> {teacher}<br>'
     return HttpResponse(out_str)
 

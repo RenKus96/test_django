@@ -42,4 +42,7 @@
         </tr>
         {% endfor %}
     </table> -->
+    {% with list_objects=group.teachers.all %}
+        {% include 'includes/teachers_list_table.html' %}
+    {% endwith %}
 {% endblock %}

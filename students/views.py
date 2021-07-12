@@ -25,7 +25,8 @@ def hello(request):
 )
 def generate_students(request, count):
     out_str = f'Сгенерировано <b>{count}</b> студентов:<br>'
-    for num, student in enumerate(Student.generate_students(count), 1):
+    # for num, student in enumerate(Student.generate_students(count), 1):
+    for num, student in enumerate(Student.generate(count), 1):
         out_str += f'<b>{num}.</b> {student}<br>'
     return HttpResponse(out_str)
 

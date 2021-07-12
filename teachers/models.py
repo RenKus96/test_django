@@ -34,9 +34,18 @@ class Teacher(Person):
     def _generate(cls):
         faker = Faker()
         obj = super()._generate()
-        obj.years_of_experience=faker.random_int(min=1, max=60),
-        obj.academic_degrees=random.choice(ACADEMIC_DEGREES),
+        obj.years_of_experience=faker.random_int(min=1, max=60)
+        obj.academic_degrees=random.choice(ACADEMIC_DEGREES)
         obj.save()
+        return obj
+
+
+    @classmethod
+    def generate(cls, count):
+        create_teachers = []
+        for _ in range(count):
+            create_teachers.append(str(cls._generate()))
+        return create_teachers
 
 
     @staticmethod

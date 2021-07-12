@@ -31,8 +31,9 @@
             <th>Date of creation</th>
             <th>End date</th>
             <th>Number of students</th>
-            {# <th>Students in group</th> #}
+            <th>Students in group</th>
             <th>Head man</th>
+            <th>Teachers</th>
             <th><i class="bi bi-pencil-fill"></i></th>
             <th>🚮</th>
         </tr>
@@ -44,14 +45,17 @@
             <td>{{ group.date_of_creation }}</td>
             <td>{% if group.end_date %}{{ group.end_date }}{% endif %}</td>
             <td>{{ group.number_of_students }}</td>
-            {% comment %}
             <td>
                 {% for student in group.students.all %}
-                    {{ forloop.counter }}.{{ student.first_name }} {{ student.last_name }}<br>
+                    {{ forloop.counter }}. {{ student.first_name }} {{ student.last_name }}<br>
                 {% endfor %}
             </td>
-            {% endcomment %}
             <td>{% if group.headman %}{{ group.headman.first_name }} {{ group.headman.last_name }}{% endif %}</td>
+            <td>
+                {% for teacher in group.teachers.all %}
+                    {{ forloop.counter }}. {{ teacher }}<br>
+                {% endfor %}
+            </td>
             <td><a class="btn btn-outline-primary btn-sm" href="{% url 'groups:update' group.id %}">EDIT</a></td>
             <td><a class="btn btn-outline-danger btn-sm" href="{% url 'groups:delete' group.id %}">DELETE</a></td>
         </tr>
