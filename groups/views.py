@@ -27,13 +27,13 @@ def generate_groups(request, count):
 
 
 @use_args({
-    # "group_number": fields.Int(
-    #     required=False,
-    #     validate=[validate.Range(min=1, max=100)]
-    # ),
-    "academic_subject": fields.Str(
-        required=False
+    "group_number": fields.Int(
+        required=False,
+        validate=[validate.Range(min=1, max=100)]
     ),
+    # "academic_subject": fields.Str(
+    #     required=False
+    # ),
     "date_of_creation": fields.Date(
         required=False
     )},

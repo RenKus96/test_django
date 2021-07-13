@@ -7,6 +7,6 @@ app_name = 'courses'
 urlpatterns = [
     path('', get_courses, name='list'),
     path('create/', create_course, name='create'),
-    # path('update/<int:id>/', update_course, name='update'),
-    # path('delete/<int:pk>/', delete_course, name='delete'),
+    path('update/<int:id>/', update_course, name='update'),
+    path('delete/<int:pk>/', delete_course, name='delete'),
 ]

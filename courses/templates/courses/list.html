@@ -18,6 +18,7 @@
             <th></th>
             <th>Academic subject</th>
             <th>Number of hours</th>
+            <th>Group</th>
             <th><i class="bi bi-pencil-fill"></i></th>
             <th>🚮</th>
         </tr>
@@ -26,8 +27,9 @@
             <td><b>{{ forloop.counter }}</b></td>
             <td>{{ course.academic_subject }}</td>
             <td>{{ course.number_of_hours }}</td>
-            <td><a class="btn btn-outline-primary btn-sm" href="{% url 'courses:update' group.id %}">EDIT</a></td>
-            <td><a class="btn btn-outline-danger btn-sm" href="{% url 'courses:delete' group.id %}">DELETE</a></td>
+            <td>{% if course.course_group %}{{ course.course_group }}{% endif %}</td>
+            <td><a class="btn btn-outline-primary btn-sm" href="{% url 'courses:update' course.id %}">EDIT</a></td>
+            <td><a class="btn btn-outline-danger btn-sm" href="{% url 'courses:delete' course.id %}">DELETE</a></td>
         </tr>
         {% endfor %}
     </table>

@@ -41,7 +41,8 @@
         <tr>
             <td><b>{{ forloop.counter }}</b></td>
             <td>{{ group.group_number }}</td>
-            <td>{{ group.academic_subject }}</td>
+            <td>{% if group.course %}{{ group.course.academic_subject }}{% endif %}</td>
+            {#<td>{{ group.academic_subject }}</td>#}
             <td>{{ group.date_of_creation }}</td>
             <td>{% if group.end_date %}{{ group.end_date }}{% endif %}</td>
             <td>{{ group.number_of_students }}</td>

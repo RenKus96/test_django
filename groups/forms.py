@@ -38,5 +38,6 @@ class GroupsFilter(django_filters.FilterSet):
         model = Group
         fields = {
             'group_number': ['exact'],
-            'academic_subject': ['exact', 'icontains'],
+            # 'academic_subject': ['exact', 'icontains'],
+            'course': ['exact'],
         }

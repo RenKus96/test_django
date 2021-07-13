@@ -4,7 +4,7 @@ from courses.models import Course
 
 
 class Command(BaseCommand):
-    help = 'Команда для генерация групп'  # noqa
+    help = 'Command for generation courses'  # noqa
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -12,7 +12,7 @@ class Command(BaseCommand):
             type=int,
             nargs='?',
             default=10,
-            help=u'Number of groups to create')
+            help=u'Number of courses to create')
 
     def handle(self, *args, **options):
         count = options['count']
