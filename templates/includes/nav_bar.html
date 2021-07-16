@@ -7,7 +7,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" href="{% url 'students:list' %}">Students</a>
         </li>
         <li class="nav-item">
@@ -18,8 +18,52 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'courses:list' %}">Courses</a>
+        </li> -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Students
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="{% url 'students:list' %}">List</a></li>
+            <li><a class="dropdown-item" href="{% url 'students:create' %}">Create</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{% url 'students:generate' %}">Generate</a></li>
+          </ul>
         </li>
         <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Teachers
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="{% url 'teachers:list' %}">List</a></li>
+            <li><a class="dropdown-item" href="{% url 'teachers:create' %}">Create</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{% url 'teachers:generate' %}">Generate</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Groups
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="{% url 'groups:list' %}">List</a></li>
+            <li><a class="dropdown-item" href="{% url 'groups:create' %}">Create</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{% url 'groups:generate' %}">Generate</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Courses
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="{% url 'courses:list' %}">List</a></li>
+            <li><a class="dropdown-item" href="{% url 'courses:create' %}">Create</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{% url 'courses:generate' %}">Generate</a></li>
+          </ul>
+        </li>
+        <!-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Create
           </a>
@@ -28,11 +72,9 @@
             <li><a class="dropdown-item" href="{% url 'teachers:create' %}">Teacher</a></li>
             <li><a class="dropdown-item" href="{% url 'groups:create' %}">Group</a></li>
             <li><a class="dropdown-item" href="{% url 'courses:create' %}">Course</a></li>
-            <!-- <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li> -->
           </ul>
-        <!-- </li>
-        <li class="nav-item">
+        </li> -->
+        <!-- <li class="nav-item"> 
           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
         </li> -->
       </ul>
