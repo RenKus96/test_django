@@ -1,5 +1,6 @@
-from teachers.views import get_teachers, create_teacher, update_teacher, delete_teacher
 from django.urls import path
+
+from teachers.views import get_teachers, create_teacher, update_teacher, delete_teacher
 
 app_name = 'teachers'
 

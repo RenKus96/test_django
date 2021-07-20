@@ -21,7 +21,8 @@ from webargs.djangoparser import use_args, use_kwargs
 )
 def generate_teachers(request, count):
     out_str = f'Сгенерировано <b>{count}</b> преподавателей:<br>'
-    for num, teacher in enumerate(Teacher.generate_teachers(count), 1):
+    # for num, teacher in enumerate(Teacher.generate_teachers(count), 1):
+    for num, teacher in enumerate(Teacher.generate(count), 1):
         out_str += f'<b>{num}.</b> {teacher}<br>'
     return HttpResponse(out_str)
 
@@ -42,7 +43,7 @@ def generate_teachers(request, count):
     location="query"
 )
 def get_teachers(request, args):
-    teachers = Teacher.objects.all()
+    teachers = Teacher.objects.all().select_related('group')
     # for param_name, param_value in args.items():
     #     if param_value:
     #         teachers = teachers.filter(**{param_name: param_value})

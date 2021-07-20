@@ -27,13 +27,13 @@ def generate_groups(request, count):
 
 
 @use_args({
-    # "group_number": fields.Int(
-    #     required=False,
-    #     validate=[validate.Range(min=1, max=100)]
-    # ),
-    "academic_subject": fields.Str(
-        required=False
+    "group_number": fields.Int(
+        required=False,
+        validate=[validate.Range(min=1, max=100)]
     ),
+    # "academic_subject": fields.Str(
+    #     required=False
+    # ),
     "date_of_creation": fields.Date(
         required=False
     )},
@@ -90,7 +90,9 @@ def update_group(request, id):
         request=request,
         template_name='groups/update.html',
         context={
-            'form': form
+            'form': form,
+            'group': group,
+            # 'students': group.students.all(),
         }
     )
 

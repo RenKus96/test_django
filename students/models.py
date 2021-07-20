@@ -1,28 +1,16 @@
 import datetime
 from dateutil.relativedelta import relativedelta
 
-from django.core.validators import MinLengthValidator
+# from django.core.validators import MinLengthValidator
 from django.db import models
 
 from faker import Faker
 
-from students.validators import AdultValidator, email_stop_list_validator
+# from students.validators import AdultValidator, email_stop_list_validator
 from groups.models import Group
+from core.models import Person
 
-class Student(models.Model):
-    last_name = models.CharField(
-        max_length=80, null=False, validators=[MinLengthValidator(2)
-    ])
-    first_name = models.CharField(max_length=50, null=False)
-    age = models.IntegerField(default=42)
-    birthdate = models.DateField(
-        # default=datetime.date.today, validators=[adult_validator]
-        default=datetime.date.today, validators=[AdultValidator(21)]
-    )
-    email = models.EmailField(max_length=120, null=True, validators=[
-        email_stop_list_validator
-    ])
-    phone_number = models.CharField(max_length=17, blank=True, unique=True, null=True)
+class Student(Person):
     enroll_date = models.DateField(default=datetime.date.today)
     graduate_date = models.DateField(default=datetime.date.today)
     graduate_date2 = models.DateField(default=datetime.date.today)
@@ -34,6 +22,22 @@ class Student(models.Model):
     def full_name(self):
         return f'{self.first_name}, {self.last_name}'
 
+
+    @classmethod
+    def _generate(cls):
+        obj = super()._generate()
+        obj.save()
+        return obj
+
+
+    @classmethod
+    def generate(cls, count):
+        create_students = []
+        for _ in range(count):
+            create_students.append(str(cls._generate()))
+        return create_students
+
+
     @staticmethod
     def generate_students(count):
         faker = Faker()
@@ -42,11 +46,8 @@ class Student(models.Model):
             st = Student(
                 first_name=faker.first_name(),
                 last_name=faker.last_name(),
+                birthdate=faker.date_between(start_date='-65y', end_date='-18y'),
                 email=faker.email(),
-                birthdate=faker.date_between(
-                    start_date='-65y',
-                    end_date='-18y'
-                )
             )
             st.age = relativedelta(datetime.date.today(), st.birthdate).years
             st.save()

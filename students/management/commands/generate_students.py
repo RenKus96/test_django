@@ -17,7 +17,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         count = options['count']
         out_str = f'Сгенерировано {count} студентов:\n'
-        for num, student in enumerate(Student.generate_students(count), 1):
+        # for num, student in enumerate(Student.generate_students(count), 1):
+        for num, student in enumerate(Student.generate(count), 1):
             out_str += f'{num}. {student}\n'
 
         self.stdout.write(self.style.SUCCESS(out_str))

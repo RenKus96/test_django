@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Courses list{% endblock %}
+{% block header %}Courses list{% endblock %}
+
+{% block content %}
+    <form method="get">
+        {{ obj_filter.form | crispy }}
+        <input class="btn btn-success mb-2 mt-2" type="submit" value="Search"><br>
+    </form>
+
+    <p><strong>Count of courses: <font size="5">{{ obj_filter.qs.count }}</font></strong></p>
+
+    <table class="table table-hover table-sm">
+        <tr>
+            <th></th>
+            <th>Academic subject</th>
+            <th>Number of hours</th>
+            <th>Group</th>
+            <th><i class="bi bi-pencil-fill"></i></th>
+            <th>🚮</th>
+        </tr>
+        {% for course in obj_filter.qs %}
+        <tr>
+            <td><b>{{ forloop.counter }}</b></td>
+            <td>{{ course.academic_subject }}</td>
+            <td>{{ course.number_of_hours }}</td>
+            <td>{% if course.course_group %}{{ course.course_group }}{% endif %}</td>
+            <td><a class="btn btn-outline-primary btn-sm" href="{% url 'courses:update' course.id %}">EDIT</a></td>
+            <td><a class="btn btn-outline-danger btn-sm" href="{% url 'courses:delete' course.id %}">DELETE</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

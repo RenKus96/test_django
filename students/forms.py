@@ -21,11 +21,15 @@ class StudentBaseForm(ModelForm):
             'phone_number',
             'enroll_date',
             'graduate_date',
+            'graduate_date2',
             'group',
         ]
         # fields = '__all__'
         widgets = {
-            'birthdate': DateInput(attrs={'type': 'date'})
+            'birthdate': DateInput(attrs={'type': 'date'}),
+            'enroll_date': DateInput(attrs={'type': 'date'}),
+            'graduate_date': DateInput(attrs={'type': 'date'}),
+            'graduate_date2': DateInput(attrs={'type': 'date'}),
         }
 
 
@@ -78,26 +82,27 @@ class StudentCreateForm(StudentBaseForm):
 
 
 class StudentUpdateForm(StudentBaseForm):
-    class Meta(StudentBaseForm.Meta):
-        fields = [
-            'first_name',
-            'last_name',
-            'age',
-            'birthdate',
-            'email',
-            'phone_number',
-            'enroll_date',
-            'graduate_date',
-            'graduate_date2',
-            'group',
-        ]
+    pass
+    # class Meta(StudentBaseForm.Meta):
+    #     fields = [
+    #         'first_name',
+    #         'last_name',
+    #         'age',
+    #         'birthdate',
+    #         'email',
+    #         'phone_number',
+    #         'enroll_date',
+    #         'graduate_date',
+    #         'graduate_date2',
+    #         'group',
+    #     ]
 
 
 class StudentsFilter(django_filters.FilterSet):
     class Meta:
         model = Student
         fields = {
-            'age': ['lt', 'gt'],
+            'age': ['gt', 'lt',],
             'first_name': ['exact', 'icontains'],
             'last_name': ['exact', 'startswith'],
             'group': ['exact'],

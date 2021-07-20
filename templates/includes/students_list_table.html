@@ -1,0 +1,30 @@
+<p><strong>Count of students: <font size="5">{{ list_objects.count }}</font></strong></p>
+<table class="table table-hover table-sm">
+    <tr>
+        <th></th>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Email</th>
+        <th>Age</th>
+        <th>Group</th>
+        <th>Head man of</th>
+        <th><i class="bi bi-pencil-fill"></i></th>
+        <th>🚮</th>
+    </tr>
+    {% for student in list_objects %}
+    <tr>
+        <td><b>{{ forloop.counter }}</b></td>
+        <td>{{ student.first_name }}</td>
+        <td>{{ student.last_name }}</td>
+        <td>{{ student.email }}</td>
+        <td>{{ student.age }}</td>
+        <td>{% if student.group %}№{{ student.group.group_number }} Created: {{ student.group.date_of_creation }}{% endif %}</td>
+        <td>{% if student.group.headman_id == student.id %}{{ student.group }}{% endif %}</td>
+        {% comment %}
+        <td>{% if student.headed_group %}{{ student.headed_group }}{% endif %}</td>
+        {% endcomment %}
+        <td><a class="btn btn-outline-primary btn-sm" href="{% url 'students:update' student.id %}">EDIT</a></td>
+        <td><a class="btn btn-outline-danger btn-sm" href="{% url 'students:delete' student.id %}">DELETE</a></td>
+    </tr>
+    {% endfor %}
+</table>

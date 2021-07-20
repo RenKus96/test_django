@@ -10,7 +10,7 @@
 {% block content %}
 <form method="post">
     {% csrf_token %}
-    <p>Do you really remove Groupe № {{ group.group_number }} "{{ group.academic_subject }}"?</p>
+    <p>Do you really remove Groupe № {{ group.group_number }} Created: {{ group.date_of_creation }}"?</p>
     <input class="btn btn-danger" type="submit" value="Agree">
     <a class="btn btn-primary" href="{% url 'groups:list' %}">Cancel</a>
 </form>
