@@ -11,12 +11,6 @@
 
 {% block content %}
     <form method="get">
-        <!-- <label >First name:</label>
-        <input type="text" name="first_name"><br><br>
-        <label >Last name:</label>
-        <input type="text" name="last_name"><br><br>
-        <label >Academic degrees:</label>
-        <input type="text" name="academic_degrees"><br><br> -->
 
         {{ obj_filter.form | crispy }}
 
@@ -26,29 +20,4 @@
     {% with list_objects=obj_filter.qs %}
         {% include 'includes/teachers_list_table.html' %}
     {% endwith %}
-    <!-- <p><strong>Count of teachers: <font size="5">{{ obj_filter.qs.count }}</font></strong></p>
-    <table class="table table-hover table-sm">
-        <tr>
-            <th></th>
-            <th>Academic degrees</th>
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Email</th>
-            <th>Group</th>
-            <th><i class="bi bi-pencil-fill"></i></th>
-            <th><i class="bi bi-trash"></i></th>
-        </tr>
-        {% for teacher in obj_filter.qs %}
-        <tr>
-            <td><b>{{ forloop.counter }}</b></td>
-            <td>{{ teacher.academic_degrees }}</td>
-            <td>{{ teacher.first_name }}</td>
-            <td>{{ teacher.last_name }}</td>
-            <td>{{ teacher.email }}</td>
-            <td>{% if teacher.group %}№{{ teacher.group.group_number }} Created: {{ teacher.group.date_of_creation }}{% endif %}</td>
-            <td><a class="btn btn-outline-primary btn-sm" href="{% url 'teachers:update' teacher.id %}">EDIT</a></td>
-            <td><a class="btn btn-outline-danger btn-sm" href="{% url 'teachers:delete' teacher.id %}">DELETE</a></td>
-        </tr>
-        {% endfor %}
-    </table> -->
 {% endblock %}

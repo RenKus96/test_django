@@ -2,9 +2,6 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
-from students.forms import StudentUpdateForm
-from students.models import Student
-
 
 def index(request):
     return render(
@@ -19,17 +16,18 @@ class EditView:
     success_url = None
     template_name = None
 
+    @classmethod
     def update_object(self, request, pk):
-        student = self.model.objects.get(id=pk)
+        update_obj = self.model.objects.get(id=pk)
 
         if request.method == 'POST':
-            form = self.form_class(instance=student, data=request.POST)
+            form = self.form_class(instance=update_obj, data=request.POST)
 
             if form.is_valid():
                 form.save()
                 return HttpResponseRedirect(reverse(self.success_url))
         else:
-            form = self.form_class(instance=student)
+            form = self.form_class(instance=update_obj)
 
         return render(
             request=request,
