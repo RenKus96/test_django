@@ -33,25 +33,25 @@ urlpatterns = [
     path('hello/', hello),
     path('', index, name='index'),
 
-	path('generate_students/', generate_students),
+	# path('generate_students/', generate_students),
     # path('students/', get_students),
     # path('students/create/', create_student),
     # path('students/update/<int:id>', update_student),
     path('students/', include('students.urls')),
 
-    path('generate_groups/', generate_groups),
+    # path('generate_groups/', generate_groups),
 	# path('groups/', get_groups),
     # path('groups/create/', create_group),
     # path('groups/update/<int:id>', update_group),
     path('groups/', include('groups.urls')),
 
-    path('generate_teachers/', generate_teachers),
+    # path('generate_teachers/', generate_teachers),
 	# path('teachers/', get_teachers),
     # path('teachers/create/', create_teacher),
     # path('teachers/update/<int:id>', update_teacher),
     path('teachers/', include('teachers.urls')),
 
-    path('generate_courses/', generate_courses),
+    # path('generate_courses/', generate_courses),
     path('courses/', include('courses.urls')),
 
 	path('__debug__/', include(debug_toolbar.urls)),    

@@ -1,6 +1,6 @@
 from django.urls import path
 
-from teachers.views import get_teachers, create_teacher, update_teacher, delete_teacher
+from teachers.views import get_teachers, create_teacher, delete_teacher, generate_teachers, update_teacher
 
 app_name = 'teachers'
 
@@ -9,4 +9,5 @@ urlpatterns = [
     path('create/', create_teacher, name='create'),
     path('update/<int:id>/', update_teacher, name='update'),
     path('delete/<int:pk>/', delete_teacher, name='delete'),
+    path('generate_teachers/', generate_teachers, name='generate'),
 ]
