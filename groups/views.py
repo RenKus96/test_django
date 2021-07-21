@@ -75,9 +75,9 @@ def create_group(request):
     )
 
 #@csrf_exempt
-def update_group(request, id):
-    # group = Group.objects.get(id=id)
-    group = get_object_or_404(Group, id=id)
+def update_group(request, pk):
+    # group = Group.objects.get(id=pk)
+    group = get_object_or_404(Group, id=pk)
     if request.method == 'GET':
         form = GroupUpdateForm(instance=group)
     elif request.method == 'POST':
@@ -94,7 +94,6 @@ def update_group(request, id):
         context={
             'form': form,
             # 'group': group,
-            # 'students': group.students.all(),
             'students': group.students.select_related('group',  'headed_group').all(),
             'teachers': group.teachers.select_related('group').all(),
         }
@@ -117,8 +116,15 @@ def delete_group(request, pk):
 
 
 class GroupListView(ListView):
-    model = Group
+    model = Group.objects.all().select_related('course', 'headman')
+    queryset = GroupsFilter(queryset=model)
     template_name = 'groups/list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['obj_filter'] = self.queryset
+
+        return context
 
 
 class GroupCreateView(CreateView):
@@ -145,6 +151,7 @@ class GroupUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['students'] = self.get_object().students.select_related('group', 'headed_group').all()
+        context['teachers'] = self.get_object().teachers.select_related('group').all()
 
         return context
 

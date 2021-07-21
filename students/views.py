@@ -141,12 +141,14 @@ def delete_student(request, pk):
         }
     )
 
+# Вариант с вью в Core (не используется в URL)
 class UpdateStudentView(EditView):
     model = Student
     form_class = StudentUpdateForm
     success_url = 'students:list'
     template_name = 'students/update.html'
 
+# А это Вариант с встроенной CBV (используется в URL)
 class StudentUpdateView(UpdateView):
     model = Student
     form_class = StudentUpdateForm
