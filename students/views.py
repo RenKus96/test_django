@@ -1,8 +1,10 @@
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
 # from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, get_object_or_404  # noqa
+from django.views.generic import ListView, UpdateView
 
+from core.views import EditView
 from students.forms import StudentCreateForm, StudentUpdateForm, StudentsFilter
 from students.models import Student
 # from students.utils import format_records
@@ -44,8 +46,7 @@ def generate_students(request, count):
     location="query"
 )
 def get_students(request, args):
-    # Students = 42
-    students = Student.objects.all().select_related('group')
+    students = Student.objects.all().select_related('group', 'headed_group')
 
     # for param_name, param_value in args.items():
     #     if param_value:
@@ -57,7 +58,7 @@ def get_students(request, args):
         request=request,
         template_name='students/list.html',
         context={
-            # 'students': students,
+            'students': students,
             'obj_filter': obj_filter,
         }
     )
@@ -139,3 +140,17 @@ def delete_student(request, pk):
             'student': student
         }
     )
+
+# Вариант с вью в Core (не используется в URL)
+class UpdateStudentView(EditView):
+    model = Student
+    form_class = StudentUpdateForm
+    success_url = 'students:list'
+    template_name = 'students/update.html'
+
+# А это Вариант с встроенной CBV (используется в URL)
+class StudentUpdateView(UpdateView):
+    model = Student
+    form_class = StudentUpdateForm
+    success_url = reverse_lazy('students:list')
+    template_name = 'students/update.html'

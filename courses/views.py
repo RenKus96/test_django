@@ -35,12 +35,14 @@ def generate_courses(request, count):
     location="query"
 )
 def get_courses(request, args):
-    courses = Course.objects.all()
+    courses = Course.objects.all().select_related('course_group')
+
     obj_filter = CoursesFilter(data=request.GET, queryset=courses)
     return render(
         request=request,
         template_name='courses/list.html',
         context={
+            'courses': courses,
             'obj_filter': obj_filter,
         }
     )
