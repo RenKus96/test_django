@@ -1,7 +1,7 @@
 from django.urls import path
 
-from groups.views import get_groups, create_group, delete_group, generate_groups, update_group
-from groups.views import GroupCreateView, GroupDeleteView, GroupListView, GroupUpdateView
+# from groups.views import get_groups, create_group, delete_group, generate_groups, update_group
+from groups.views import generate_groups, GroupCreateView, GroupDeleteView, GroupListView, GroupUpdateView
 
 app_name = 'groups'
 

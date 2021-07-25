@@ -12,10 +12,12 @@ class GroupBaseForm(ModelForm):
         model = Group
         # fields = [
         #     'group_number',
-        #     'academic_subject',
+        #     # 'academic_subject',
         #     'date_of_creation',
         #     'end_date',
         #     'number_of_students',
+        #     'headman',
+        #     'course',
         # ]
         fields = '__all__'
         widgets = {
