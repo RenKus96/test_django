@@ -109,12 +109,18 @@ def generate_teachers(request, count):
 
 class TeacherListView(ListView):
     model = Teacher.objects.all().select_related('group')
-    queryset = TeachersFilter(queryset=model)
     template_name = 'teachers/list.html'
+
+    def get_queryset(self):
+        obj_filter = TeachersFilter(
+            data=self.request.GET, 
+            queryset=self.model
+        )
+        return obj_filter
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['obj_filter'] = self.queryset
+        context['obj_filter'] = self.get_queryset()
         return context
 
 

@@ -1,6 +1,7 @@
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404  # noqa
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from courses.forms import CourseCreateForm, CourseUpdateForm, CoursesFilter
 from courses.models import Course
@@ -24,78 +25,115 @@ def generate_courses(request, count):
     return HttpResponse(out_str)
 
 
-@use_args({
-    "academic_subject": fields.Str(
-        required=False
-    ),
-    "number_of_hours": fields.Int(
-        required=False,
-        missing=10
-    )},
-    location="query"
-)
-def get_courses(request, args):
-    courses = Course.objects.all().select_related('course_group')
+# @use_args({
+#     "academic_subject": fields.Str(
+#         required=False
+#     ),
+#     "number_of_hours": fields.Int(
+#         required=False,
+#         missing=10
+#     )},
+#     location="query"
+# )
+# def get_courses(request, args):
+#     courses = Course.objects.all().select_related('course_group')
 
-    obj_filter = CoursesFilter(data=request.GET, queryset=courses)
-    return render(
-        request=request,
-        template_name='courses/list.html',
-        context={
-            'courses': courses,
-            'obj_filter': obj_filter,
-        }
-    )
+#     obj_filter = CoursesFilter(data=request.GET, queryset=courses)
+#     return render(
+#         request=request,
+#         template_name='courses/list.html',
+#         context={
+#             'courses': courses,
+#             'obj_filter': obj_filter,
+#         }
+#     )
 
 
-def create_course(request):
-    if request.method == 'GET':
-        form = CourseCreateForm()
-    elif request.method == 'POST':
-        form = CourseCreateForm(data=request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('courses:list'))
-    return render(
-        request=request,
-        template_name='courses/create.html',
-        context={
-            'form': form
-        }
-    )
+# def create_course(request):
+#     if request.method == 'GET':
+#         form = CourseCreateForm()
+#     elif request.method == 'POST':
+#         form = CourseCreateForm(data=request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect(reverse('courses:list'))
+#     return render(
+#         request=request,
+#         template_name='courses/create.html',
+#         context={
+#             'form': form
+#         }
+#     )
 
-def update_course(request, id):
-    course = get_object_or_404(Course, id=id)
-    if request.method == 'GET':
-        form = CourseUpdateForm(instance=course)
-    elif request.method == 'POST':
-        form = CourseUpdateForm(
-            instance=course,
-            data=request.POST
+# def update_course(request, id):
+#     course = get_object_or_404(Course, id=id)
+#     if request.method == 'GET':
+#         form = CourseUpdateForm(instance=course)
+#     elif request.method == 'POST':
+#         form = CourseUpdateForm(
+#             instance=course,
+#             data=request.POST
+#         )
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect(reverse('courses:list'))
+#     return render(
+#         request=request,
+#         template_name='courses/update.html',
+#         context={
+#             'form': form,
+#             'course': course,
+#         }
+#     )
+
+
+# def delete_course(request, pk):
+#     course = get_object_or_404(Course, id=pk)
+#     if request.method == 'POST':
+#         course.delete()
+#         return HttpResponseRedirect(reverse('courses:list'))
+
+#     return render(
+#         request=request,
+#         template_name='courses/delete.html',
+#         context={
+#             'course': course
+#         }
+#     )
+
+
+class CourseListView(ListView):
+    model = Course.objects.all().select_related('course_group')
+    template_name = 'courses/list.html'
+
+    def get_queryset(self):
+        obj_filter = CoursesFilter(
+            data=self.request.GET, 
+            queryset=self.model
         )
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('courses:list'))
-    return render(
-        request=request,
-        template_name='courses/update.html',
-        context={
-            'form': form,
-            'course': course,
-        }
-    )
+        return obj_filter
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['obj_filter'] = self.get_queryset()
+        return context
 
 
-def delete_course(request, pk):
-    course = get_object_or_404(Course, id=pk)
-    if request.method == 'POST':
-        course.delete()
-        return HttpResponseRedirect(reverse('courses:list'))
+class CourseCreateView(CreateView):
+    model = Course
+    form_class = CourseCreateForm
+    success_url = reverse_lazy('courses:list')
+    template_name = 'courses/create.html'
 
-    return render(
-        request=request,
-        template_name='courses/delete.html',
-        context={
-            'course': course
-        }
-    )
+
+class CourseUpdateView(UpdateView):
+    model = Course
+    form_class = CourseUpdateForm
+    success_url = reverse_lazy('courses:list')
+    template_name = 'courses/update.html'
+
+
+class CourseDeleteView(DeleteView):
+    model = Course
+    success_url = reverse_lazy('courses:list')
+    template_name = 'courses/delete.html'

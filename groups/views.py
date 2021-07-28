@@ -2,7 +2,7 @@ from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
 # from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, get_object_or_404  # noqa
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from groups.forms import GroupCreateForm, GroupUpdateForm, GroupsFilter
 from groups.models import Group
@@ -114,10 +114,16 @@ class GroupListView(ListView):
     queryset = GroupsFilter(queryset=model)
     template_name = 'groups/list.html'
 
+    def get_queryset(self):
+        obj_filter = GroupsFilter(
+            data=self.request.GET, 
+            queryset=self.model
+        )
+        return obj_filter
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['obj_filter'] = self.queryset
-        # context['groups'] = self.model.prefetch_related('students', 'teachers').all()
+        context['obj_filter'] = self.get_queryset()
         return context
 
 
@@ -128,19 +134,13 @@ class GroupCreateView(CreateView):
     template_name = 'groups/create.html'
 
 
-class GroupDeleteView(DeleteView):
-    model = Group
-    success_url = reverse_lazy('groups:list')
-    template_name = 'groups/delete.html'
-
-
 class GroupUpdateView(UpdateView):
     model = Group
     form_class = GroupUpdateForm
     success_url = reverse_lazy('groups:list')
     template_name = 'groups/update.html'
 
-    pk_url_kwarg = 'ppk'
+    # pk_url_kwarg = 'ppk'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -149,18 +149,25 @@ class GroupUpdateView(UpdateView):
 
         return context
 
-    # def get_initial(self):
-    #     initial = super().get_initial()
-    #     try:
-    #         initial['headman_field'] = self.object.headman.id
-    #     except AttributeError as ex:
-    #         pass
+    def get_initial(self):
+        initial = super().get_initial()
+        try:
+            initial['headman_field'] = self.object.headman.id
+        except AttributeError as ex:
+            pass
 
-    #     return initial
+        return initial
 
-    # def form_valid(self, form):
-    #     respose = super().form_valid(form)
-    #     form.instance.headman = Student.objects.get(id=form.cleaned_data['headman_field'])
-    #     form.instance.save()
+    def form_valid(self, form):
+        respose = super().form_valid(form)
+        form.instance.headman = Student.objects.get(id=form.cleaned_data['headman_field'])
+        form.instance.save()
 
-    #     return respose
+        return respose
+
+
+class GroupDeleteView(DeleteView):
+    model = Group
+    success_url = reverse_lazy('groups:list')
+    template_name = 'groups/delete.html'
+    

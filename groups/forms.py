@@ -1,7 +1,7 @@
 # import datetime
 
 from django.core.exceptions import ValidationError
-from django.forms import DateInput, ModelForm
+from django.forms import DateInput, ModelForm, ChoiceField
 import django_filters
 
 from groups.models import Group
@@ -32,7 +32,16 @@ class GroupCreateForm(GroupBaseForm):
 
 
 class GroupUpdateForm(GroupBaseForm):
-    pass
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['headman_field'] = ChoiceField(
+            choices=[(st.id, str(st)) for st in self.instance.students.all()],
+            label='Headman',
+            required=False
+        )
+
+    class Meta(GroupBaseForm.Meta):
+        exclude = ['headman']
 
 
 class GroupsFilter(django_filters.FilterSet):

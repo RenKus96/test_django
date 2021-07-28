@@ -10,16 +10,7 @@
 {% endblock %}
 
 {% block content %}
-    <form method="get">
-        <!-- <label>Group number:</label>
-        <input type="number" name="group_number"><br><br>
-        <label >Academic subject:</label>
-        <input type="text" name="academic_subject"><br><br> -->
-
-        {{ obj_filter.form | crispy }}
-
-        <input class="btn btn-success mb-2 mt-2" type="submit" value="Search"><br>
-    </form>
+    {% include 'includes/collapse_form.html' %}
 
     <p><strong>Count of groups: <font size="5">{{ obj_filter.qs.count }}</font></strong></p>
 

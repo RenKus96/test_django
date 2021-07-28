@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
 
-{% load crispy_forms_tags %}
-
 {% block title %}Teachers list{% endblock %}
 {% block header %}Teachers list{% endblock %}
 
@@ -10,12 +8,7 @@
 {% endblock %}
 
 {% block content %}
-    <form method="get">
-
-        {{ obj_filter.form | crispy }}
-
-        <input class="btn btn-success mb-2 mt-2" type="submit" value="Search"><br>
-    </form>
+    {% include 'includes/collapse_form.html' %}
 
     {% with list_objects=obj_filter.qs %}
         {% include 'includes/teachers_list_table.html' %}
