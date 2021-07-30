@@ -144,3 +144,5 @@ USE_L10N = False
 INTERNAL_IPS = [
     '127.0.0.1'
 ]
+
+EMAIL_PORT = 1025
