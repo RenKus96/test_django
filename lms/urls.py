@@ -32,6 +32,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('hello/', hello),
     path('', index, name='index'),
+    path('accounts/', include('accounts.urls')),
 
 	# path('generate_students/', generate_students),
     # path('students/', get_students),
