@@ -1,10 +1,9 @@
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
-# from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, get_object_or_404  # noqa
-from django.views.generic import ListView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
-from core.views import EditView
+# from core.views import EditView
 from students.forms import StudentCreateForm, StudentUpdateForm, StudentsFilter
 from students.models import Student
 # from students.utils import format_records
@@ -27,126 +26,122 @@ def hello(request):
 )
 def generate_students(request, count):
     out_str = f'Сгенерировано <b>{count}</b> студентов:<br>'
-    # for num, student in enumerate(Student.generate_students(count), 1):
     for num, student in enumerate(Student.generate(count), 1):
         out_str += f'<b>{num}.</b> {student}<br>'
     return HttpResponse(out_str)
 
 
-@use_args({
-    "first_name": fields.Str(
-        required=False
-    ),
-    "last_name": fields.Str(
-        required=False
-    ),
-    "birthdate": fields.Date(
-        required=False
-    )},
-    location="query"
-)
-def get_students(request, args):
-    students = Student.objects.all().select_related('group', 'headed_group')
+# @use_args({
+#     "first_name": fields.Str(
+#         required=False
+#     ),
+#     "last_name": fields.Str(
+#         required=False
+#     ),
+#     "birthdate": fields.Date(
+#         required=False
+#     )},
+#     location="query"
+# )
+# def get_students(request, args):
+#     students = Student.objects.all().select_related('group', 'headed_group')
+#     obj_filter = StudentsFilter(data=request.GET, queryset=students)
 
-    # for param_name, param_value in args.items():
-    #     if param_value:
-    #         students = students.filter(**{param_name: param_value})
-
-    obj_filter = StudentsFilter(data=request.GET, queryset=students)
-
-    return render(
-        request=request,
-        template_name='students/list.html',
-        context={
-            'students': students,
-            'obj_filter': obj_filter,
-        }
-    )
+#     return render(
+#         request=request,
+#         template_name='students/list.html',
+#         context={
+#             'students': students,
+#             'obj_filter': obj_filter,
+#         }
+#     )
 
 
-# @csrf_exempt
-def create_student(request):
-    if request.method == 'GET':
+# def create_student(request):
+#     if request.method == 'GET':
+#         form = StudentCreateForm()
+#     elif request.method == 'POST':
+#         form = StudentCreateForm(data=request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect(reverse('students:list'))
 
-        form = StudentCreateForm()
-
-    elif request.method == 'POST':
-
-        form = StudentCreateForm(data=request.POST)
-
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('students:list'))
-
-    return render(
-        request=request,
-        template_name='students/create.html',
-        context={
-            'form': form
-        }
-    )
+#     return render(
+#         request=request,
+#         template_name='students/create.html',
+#         context={
+#             'form': form
+#         }
+#     )
 
 
-# @csrf_exempt
-def update_student(request, id):
-    # student = Student.objects.get(id=id)
-    student = get_object_or_404(Student, id=id)
+# def update_student(request, id):
+#     student = get_object_or_404(Student, id=id)
+#     if request.method == 'GET':
+#         form = StudentUpdateForm(instance=student)
+#     elif request.method == 'POST':
+#         form = StudentUpdateForm(
+#             instance=student,
+#             data=request.POST
+#         )
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect(reverse('students:list'))
 
-    if request.method == 'GET':
+#     return render(
+#         request=request,
+#         template_name='students/update.html',
+#         context={
+#             'form': form
+#         }
+#     )
 
-        form = StudentUpdateForm(instance=student)
 
-    elif request.method == 'POST':
+# def delete_student(request, pk):
+#     student = get_object_or_404(Student, id=pk)
+#     if request.method == 'POST':
+#         student.delete()
+#         return HttpResponseRedirect(reverse('students:list'))
 
-        form = StudentUpdateForm(
-            instance=student,
-            data=request.POST
+#     return render(
+#         request=request,
+#         template_name='students/delete.html',
+#         context={
+#             'student': student
+#         }
+#     )
+
+
+class StudentListView(ListView):
+    model = Student.objects.all().select_related('group', 'headed_group')
+    template_name = 'students/list.html'
+
+    def get_queryset(self):
+        obj_filter = StudentsFilter(
+            data=self.request.GET, 
+            queryset=self.model
         )
+        return obj_filter
 
-        if form.is_valid():
-            form.save()
-    #         return HttpResponseRedirect('/students/')
-            return HttpResponseRedirect(reverse('students:list'))
-
-    # html_form = f"""
-    # <form method="post">
-    #   {form.as_p()}
-    #   <input type="submit" value="Save">
-    # </form>
-    # """
-
-    # response = html_form
-
-    # return HttpResponse(response)
-    return render(
-        request=request,
-        template_name='students/update.html',
-        context={
-            'form': form
-        }
-    )
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['obj_filter'] = self.get_queryset()
+        return context
 
 
-def delete_student(request, pk):
-    student = get_object_or_404(Student, id=pk)
-    if request.method == 'POST':
-        student.delete()
-        return HttpResponseRedirect(reverse('students:list'))
+class StudentCreateView(CreateView):
+    model = Student
+    form_class = StudentCreateForm
+    success_url = reverse_lazy('students:list')
+    template_name = 'students/create.html'
 
-    return render(
-        request=request,
-        template_name='students/delete.html',
-        context={
-            'student': student
-        }
-    )
 
 # Вариант с вью в Core (не используется в URL)
-class UpdateStudentView(EditView):
-    model = Student
-    form_class = StudentUpdateForm
-    success_url = 'students:list'
-    template_name = 'students/update.html'
+# class UpdateStudentView(EditView):
+#     model = Student
+#     form_class = StudentUpdateForm
+#     success_url = 'students:list'
+#     template_name = 'students/update.html'
 
 # А это Вариант с встроенной CBV (используется в URL)
 class StudentUpdateView(UpdateView):
@@ -154,3 +149,9 @@ class StudentUpdateView(UpdateView):
     form_class = StudentUpdateForm
     success_url = reverse_lazy('students:list')
     template_name = 'students/update.html'
+
+
+class StudentDeleteView(DeleteView):
+    model = Student
+    success_url = reverse_lazy('students:list')
+    template_name = 'students/delete.html'

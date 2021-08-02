@@ -1,0 +1,11 @@
+{% load crispy_forms_tags %}
+
+<a class="btn btn-info btn-sm mb-2" data-bs-toggle="collapse" href="#collapseForm" role="button" aria-expanded="false" aria-controls="collapseForm">
+    <b>Toggle Search Form</b>
+</a><br>
+<div class="collapse" id="collapseForm">
+    <form method="get">
+        {{ obj_filter.form | crispy }}
+        <input class="btn btn-success btn-sm mb-2 mt-2" type="submit" value="Search"><br>
+    </form>
+</div>

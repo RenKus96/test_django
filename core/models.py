@@ -20,7 +20,7 @@ class Person(models.Model):
     age = models.IntegerField(default=42)
     birthdate = models.DateField(
         # default=datetime.date.today, validators=[adult_validator]
-        default=datetime.date.today, validators=[AdultValidator(21)]
+        default=datetime.date.today, validators=[AdultValidator(18)]
     )
     email = models.EmailField(max_length=120, null=True, validators=[
         email_stop_list_validator

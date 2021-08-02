@@ -17,7 +17,7 @@ class Student(Person):
     group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, related_name='students')
 
     def __str__(self):
-        return f'{self.full_name()}, {self.birthdate}, {self.id}, {self.group}'
+        return f'{self.full_name()}, {self.birthdate}'
 
     def full_name(self):
         return f'{self.first_name}, {self.last_name}'

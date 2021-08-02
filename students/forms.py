@@ -82,7 +82,8 @@ class StudentCreateForm(StudentBaseForm):
 
 
 class StudentUpdateForm(StudentBaseForm):
-    pass
+    class Meta(StudentBaseForm.Meta):
+        exclude = ['age']
     # class Meta(StudentBaseForm.Meta):
     #     fields = [
     #         'first_name',

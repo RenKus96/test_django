@@ -26,7 +26,6 @@ class Group(models.Model):
     end_date = models.DateField(null=True, blank=True)
     number_of_students = models.IntegerField(default=0)
     headman = models.OneToOneField(
-        # Student,
         'students.Student',
         on_delete=models.SET_NULL,
         null=True,

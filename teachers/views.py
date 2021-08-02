@@ -22,105 +22,105 @@ from webargs.djangoparser import use_args, use_kwargs
 )
 def generate_teachers(request, count):
     out_str = f'Сгенерировано <b>{count}</b> преподавателей:<br>'
-    # for num, teacher in enumerate(Teacher.generate_teachers(count), 1):
     for num, teacher in enumerate(Teacher.generate(count), 1):
         out_str += f'<b>{num}.</b> {teacher}<br>'
     return HttpResponse(out_str)
 
 
-@use_args({
-    "first_name": fields.Str(
-        required=False
-    ),
-    "last_name": fields.Str(
-        required=False
-    ),
-    "birthdate": fields.Date(
-        required=False
-    ),
-    "academic_degrees": fields.Str(
-        required=False
-    )},
-    location="query"
-)
-def get_teachers(request, args):
-    teachers = Teacher.objects.all().select_related('group')
-    # for param_name, param_value in args.items():
-    #     if param_value:
-    #         teachers = teachers.filter(**{param_name: param_value})
-    obj_filter = TeachersFilter(data=request.GET, queryset=teachers)
-    return render(
-        request=request,
-        template_name='teachers/list.html',
-        context={
-            # 'teachers': teachers,
-            'obj_filter': obj_filter,
-        }
-    )
+# @use_args({
+#     "first_name": fields.Str(
+#         required=False
+#     ),
+#     "last_name": fields.Str(
+#         required=False
+#     ),
+#     "birthdate": fields.Date(
+#         required=False
+#     ),
+#     "academic_degrees": fields.Str(
+#         required=False
+#     )},
+#     location="query"
+# )
+# def get_teachers(request, args):
+#     teachers = Teacher.objects.all().select_related('group')
+#     obj_filter = TeachersFilter(data=request.GET, queryset=teachers)
+#     return render(
+#         request=request,
+#         template_name='teachers/list.html',
+#         context={
+#             # 'teachers': teachers,
+#             'obj_filter': obj_filter,
+#         }
+#     )
 
-#@csrf_exempt
-def create_teacher(request):
-    if request.method == 'GET':
-        form = TeacherCreateForm()
-    elif request.method == 'POST':
-        form = TeacherCreateForm(data=request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('teachers:list'))
-    return render(
-        request=request,
-        template_name='teachers/create.html',
-        context={
-            'form': form
-        }
-    )
+# def create_teacher(request):
+#     if request.method == 'GET':
+#         form = TeacherCreateForm()
+#     elif request.method == 'POST':
+#         form = TeacherCreateForm(data=request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect(reverse('teachers:list'))
+#     return render(
+#         request=request,
+#         template_name='teachers/create.html',
+#         context={
+#             'form': form
+#         }
+#     )
 
 
-#@csrf_exempt
-def update_teacher(request, id):
-    # teacher = Teacher.objects.get(id=id)
-    teacher = get_object_or_404(Teacher, id=id)
-    if request.method == 'GET':
-        form = TeacherUpdateForm(instance=teacher)
-    elif request.method == 'POST':
-        form = TeacherUpdateForm(
-            instance=teacher,
-            data=request.POST
-        )
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('teachers:list'))
-    return render(
-        request=request,
-        template_name='teachers/update.html',
-        context={
-            'form': form
-        }
-    )
+# def update_teacher(request, id):
+#     teacher = get_object_or_404(Teacher, id=id)
+#     if request.method == 'GET':
+#         form = TeacherUpdateForm(instance=teacher)
+#     elif request.method == 'POST':
+#         form = TeacherUpdateForm(
+#             instance=teacher,
+#             data=request.POST
+#         )
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect(reverse('teachers:list'))
+#     return render(
+#         request=request,
+#         template_name='teachers/update.html',
+#         context={
+#             'form': form
+#         }
+#     )
 
 
-def delete_teacher(request, pk):
-    teacher = get_object_or_404(Teacher, id=pk)
-    if request.method == 'POST':
-        teacher.delete()
-        return HttpResponseRedirect(reverse('teachers:list'))
+# def delete_teacher(request, pk):
+#     teacher = get_object_or_404(Teacher, id=pk)
+#     if request.method == 'POST':
+#         teacher.delete()
+#         return HttpResponseRedirect(reverse('teachers:list'))
 
-    return render(
-        request=request,
-        template_name='teachers/delete.html',
-        context={
-            'teacher': teacher
-        }
-    )
+#     return render(
+#         request=request,
+#         template_name='teachers/delete.html',
+#         context={
+#             'teacher': teacher
+#         }
+#     )
+
 
 class TeacherListView(ListView):
     model = Teacher.objects.all().select_related('group')
-    queryset = TeachersFilter(queryset=model)
     template_name = 'teachers/list.html'
+
+    def get_queryset(self):
+        obj_filter = TeachersFilter(
+            data=self.request.GET, 
+            queryset=self.model
+        )
+        return obj_filter
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['obj_filter'] = self.queryset
+        context['obj_filter'] = self.get_queryset()
         return context
 
 

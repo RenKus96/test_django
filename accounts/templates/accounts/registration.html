@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Create user
+{% endblock %}
+
+{% block header %}
+    Create new user
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form | crispy }}
+        <input class="btn btn-success mt-2" type="submit" value="Sign Up">
+        <a class="btn btn-primary mt-2" href="{% url 'accounts:login' %}">Sign In</a>
+    </form>
+{% endblock %}
