@@ -14,6 +14,9 @@
     <form method="post">
         {% csrf_token %}
         {{ form | crispy }}
+        <a href="{% url 'password_reset' %}">
+            If you forgot the password, we can change it for you.
+        </a>
         <div>
             <input class="btn btn-success mt-2" type="submit" value="Sign In">
             <a class="btn btn-primary mt-2" href="{% url 'accounts:registration' %}">Sign Up</a>

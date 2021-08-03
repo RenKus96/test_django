@@ -3,6 +3,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 # from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, get_object_or_404  # noqa
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 from groups.forms import GroupCreateForm, GroupUpdateForm, GroupsFilter
 from groups.models import Group
@@ -13,6 +15,7 @@ from webargs import fields, validate
 from webargs.djangoparser import use_args, use_kwargs
 
 
+@login_required 
 @use_kwargs({
     "count": fields.Int(
         required=False,
@@ -109,7 +112,7 @@ def generate_groups(request, count):
 #     )
 
 
-class GroupListView(ListView):
+class GroupListView(LoginRequiredMixin, ListView):
     model = Group.objects.all().select_related('course', 'headman').prefetch_related('students', 'teachers')
     queryset = GroupsFilter(queryset=model)
     template_name = 'groups/list.html'
@@ -127,14 +130,14 @@ class GroupListView(ListView):
         return context
 
 
-class GroupCreateView(CreateView):
+class GroupCreateView(LoginRequiredMixin, CreateView):
     model = Group
     form_class = GroupCreateForm
     success_url = reverse_lazy('groups:list')
     template_name = 'groups/create.html'
 
 
-class GroupUpdateView(UpdateView):
+class GroupUpdateView(LoginRequiredMixin, UpdateView):
     model = Group
     form_class = GroupUpdateForm
     success_url = reverse_lazy('groups:list')
@@ -166,7 +169,7 @@ class GroupUpdateView(UpdateView):
         return respose
 
 
-class GroupDeleteView(DeleteView):
+class GroupDeleteView(LoginRequiredMixin, DeleteView):
     model = Group
     success_url = reverse_lazy('groups:list')
     template_name = 'groups/delete.html'

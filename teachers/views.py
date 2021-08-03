@@ -3,6 +3,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 # from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, get_object_or_404  # noqa
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 from teachers.forms import TeacherCreateForm, TeacherUpdateForm, TeachersFilter
 from teachers.models import Teacher
@@ -12,6 +14,7 @@ from webargs import fields, validate
 from webargs.djangoparser import use_args, use_kwargs
 
 
+@login_required 
 @use_kwargs({
     "count": fields.Int(
         required=False,
@@ -107,7 +110,7 @@ def generate_teachers(request, count):
 #     )
 
 
-class TeacherListView(ListView):
+class TeacherListView(LoginRequiredMixin, ListView):
     model = Teacher.objects.all().select_related('group')
     template_name = 'teachers/list.html'
 
@@ -124,20 +127,20 @@ class TeacherListView(ListView):
         return context
 
 
-class TeacherCreateView(CreateView):
+class TeacherCreateView(LoginRequiredMixin, CreateView):
     model = Teacher
     form_class = TeacherCreateForm
     success_url = reverse_lazy('teachers:list')
     template_name = 'teachers/create.html'
 
 
-class TeacherDeleteView(DeleteView):
+class TeacherDeleteView(LoginRequiredMixin, DeleteView):
     model = Teacher
     success_url = reverse_lazy('teachers:list')
     template_name = 'teachers/delete.html'
 
 
-class TeacherUpdateView(UpdateView):
+class TeacherUpdateView(LoginRequiredMixin, UpdateView):
     model = Teacher
     form_class = TeacherUpdateForm
     success_url = reverse_lazy('teachers:list')
