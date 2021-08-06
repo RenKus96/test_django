@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
 # from django.shortcuts import render, get_object_or_404  # noqa
@@ -138,6 +139,11 @@ class StudentCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('students:list')
     template_name = 'students/create.html'
 
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        messages.success(self.request, f'Student {self.object} was successfully added to base.')
+
+        return result
 
 # Вариант с вью в Core (не используется в URL)
 # class UpdateStudentView(LoginRequiredMixin, EditView):

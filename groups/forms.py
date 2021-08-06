@@ -28,7 +28,7 @@ class GroupBaseForm(ModelForm):
 
 class GroupCreateForm(GroupBaseForm):
     class Meta(GroupBaseForm.Meta):
-        exclude = ['end_date']
+        exclude = ['end_date', 'headman']
 
 
 class GroupUpdateForm(GroupBaseForm):

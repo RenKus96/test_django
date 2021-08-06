@@ -20,7 +20,7 @@ class Student(Person):
         return f'{self.full_name()}, {self.birthdate}'
 
     def full_name(self):
-        return f'{self.first_name}, {self.last_name}'
+        return f'{self.first_name} {self.last_name}'
 
 
     @classmethod

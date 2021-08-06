@@ -15,7 +15,7 @@ class StudentsInlineTable(admin.TabularInline):
         'email',
     ]
 
-    readonly_fields = fields
+    # readonly_fields = fields
     show_change_link = True
     extra = 0
 
@@ -28,7 +28,7 @@ class TeachersInlineTable(admin.TabularInline):
         'email',
     ]
 
-    readonly_fields = fields
+    # readonly_fields = fields
     show_change_link = True
     extra = 0
 

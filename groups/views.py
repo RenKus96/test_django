@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
 # from django.views.decorators.csrf import csrf_exempt
@@ -136,6 +137,11 @@ class GroupCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('groups:list')
     template_name = 'groups/create.html'
 
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        messages.success(self.request, f'Group №{self.object.group_number} was successfully created.')
+
+        return result
 
 class GroupUpdateView(LoginRequiredMixin, UpdateView):
     model = Group
