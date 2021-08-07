@@ -1,7 +1,10 @@
+from django.contrib import messages
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404  # noqa
+# from django.shortcuts import render, get_object_or_404  # noqa
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 # from core.views import EditView
 from students.forms import StudentCreateForm, StudentUpdateForm, StudentsFilter
@@ -16,6 +19,7 @@ def hello(request):
     return HttpResponse('Hello')
 
 
+@login_required 
 @use_kwargs({
     "count": fields.Int(
         required=False,
@@ -56,7 +60,7 @@ def generate_students(request, count):
 #         }
 #     )
 
-
+# @login_required
 # def create_student(request):
 #     if request.method == 'GET':
 #         form = StudentCreateForm()
@@ -112,7 +116,7 @@ def generate_students(request, count):
 #     )
 
 
-class StudentListView(ListView):
+class StudentListView(LoginRequiredMixin, ListView):
     model = Student.objects.all().select_related('group', 'headed_group')
     template_name = 'students/list.html'
 
@@ -129,29 +133,34 @@ class StudentListView(ListView):
         return context
 
 
-class StudentCreateView(CreateView):
+class StudentCreateView(LoginRequiredMixin, CreateView):
     model = Student
     form_class = StudentCreateForm
     success_url = reverse_lazy('students:list')
     template_name = 'students/create.html'
 
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        messages.success(self.request, f'Student {self.object} was successfully added to base.')
+
+        return result
 
 # Вариант с вью в Core (не используется в URL)
-# class UpdateStudentView(EditView):
+# class UpdateStudentView(LoginRequiredMixin, EditView):
 #     model = Student
 #     form_class = StudentUpdateForm
 #     success_url = 'students:list'
 #     template_name = 'students/update.html'
 
 # А это Вариант с встроенной CBV (используется в URL)
-class StudentUpdateView(UpdateView):
+class StudentUpdateView(LoginRequiredMixin, UpdateView):
     model = Student
     form_class = StudentUpdateForm
     success_url = reverse_lazy('students:list')
     template_name = 'students/update.html'
 
 
-class StudentDeleteView(DeleteView):
+class StudentDeleteView(LoginRequiredMixin, DeleteView):
     model = Student
     success_url = reverse_lazy('students:list')
     template_name = 'students/delete.html'

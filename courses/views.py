@@ -2,6 +2,8 @@ from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404  # noqa
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 from courses.forms import CourseCreateForm, CourseUpdateForm, CoursesFilter
 from courses.models import Course
@@ -10,6 +12,7 @@ from webargs import fields, validate
 from webargs.djangoparser import use_args, use_kwargs
 
 
+@login_required 
 @use_kwargs({
     "count": fields.Int(
         required=False,
@@ -102,7 +105,7 @@ def generate_courses(request, count):
 #     )
 
 
-class CourseListView(ListView):
+class CourseListView(LoginRequiredMixin, ListView):
     model = Course.objects.all().select_related('course_group')
     template_name = 'courses/list.html'
 
@@ -119,21 +122,21 @@ class CourseListView(ListView):
         return context
 
 
-class CourseCreateView(CreateView):
+class CourseCreateView(LoginRequiredMixin, CreateView):
     model = Course
     form_class = CourseCreateForm
     success_url = reverse_lazy('courses:list')
     template_name = 'courses/create.html'
 
 
-class CourseUpdateView(UpdateView):
+class CourseUpdateView(LoginRequiredMixin, UpdateView):
     model = Course
     form_class = CourseUpdateForm
     success_url = reverse_lazy('courses:list')
     template_name = 'courses/update.html'
 
 
-class CourseDeleteView(DeleteView):
+class CourseDeleteView(LoginRequiredMixin, DeleteView):
     model = Course
     success_url = reverse_lazy('courses:list')
     template_name = 'courses/delete.html'

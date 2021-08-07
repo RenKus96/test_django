@@ -11,4 +11,5 @@ class AccountRegistrationForm(UserCreationForm):
         ]
 
 class AccountUpdateForm(UserChangeForm):
+    # password = None
     pass

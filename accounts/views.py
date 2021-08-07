@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.contrib import messages
 from django.views.generic import CreateView, UpdateView
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
@@ -24,6 +24,12 @@ class AccountLoginView(LoginView):
 
         return reverse('index')
 
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        messages.success(self.request, f'User {self.request.user} has successfully logged in.')
+
+        return result
+
 
 class AccountLogoutView(LogoutView):
     template_name = 'accounts/logout.html'
@@ -38,13 +44,13 @@ class AccountPasswordChangeView(PasswordChangeView):
         if param_next:
             return param_next
 
-        return reverse('index')
+        return reverse('password_change_done')
 
 
 class AccountUpdateView(UpdateView):
     model = User
     template_name = 'accounts/profile_update.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('accounts:profile_update')
     form_class = AccountUpdateForm
 
     def get_object(self, queryset=None):

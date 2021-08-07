@@ -33,6 +33,7 @@ urlpatterns = [
     path('hello/', hello),
     path('', index, name='index'),
     path('accounts/', include('accounts.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 
 	# path('generate_students/', generate_students),
     # path('students/', get_students),
