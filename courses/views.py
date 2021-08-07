@@ -10,6 +10,7 @@ from courses.models import Course
 
 from webargs import fields, validate
 from webargs.djangoparser import use_args, use_kwargs
+from copy import copy
 
 
 @login_required 
@@ -122,6 +123,11 @@ class CourseListView(LoginRequiredMixin, ListView):
     def get_context_data(self, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['obj_filter'] = self.get_filter()
+        params = self.request.GET
+        if 'page' in params:
+            params = copy(params)
+            del params['page']
+        context['get_params'] = params.urlencode()
         return context
 
 
