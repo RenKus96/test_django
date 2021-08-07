@@ -117,9 +117,9 @@ def generate_students(request, count):
 
 
 class StudentListView(LoginRequiredMixin, ListView):
-    paginate_by = 10
     model = Student
     template_name = 'students/list.html'
+    paginate_by = 10
 
     def get_filter(self):
         return StudentsFilter(

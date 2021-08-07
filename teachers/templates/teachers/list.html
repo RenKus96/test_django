@@ -8,9 +8,15 @@
 {% endblock %}
 
 {% block content %}
+
     {% include 'includes/collapse_form.html' %}
 
-    {% with list_objects=obj_filter.qs %}
+    {% with list_objects=object_list %}
         {% include 'includes/teachers_list_table.html' %}
     {% endwith %}
+
+    {% if is_paginated %}
+        {% include 'includes/paginator.html' %}
+    {% endif %}
+
 {% endblock %}
