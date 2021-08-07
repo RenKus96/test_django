@@ -4,6 +4,11 @@ env/
 activate_django.cmd
 *.sql
 
+# migrations
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
