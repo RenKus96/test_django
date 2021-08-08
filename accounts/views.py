@@ -1,10 +1,14 @@
 from django.contrib import messages
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.views.generic import CreateView, UpdateView
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
 from django.urls import reverse_lazy, reverse
+from django.views.generic.edit import ProcessFormView
+# from django.utils.datastructures import MultiValueDictKeyError
 
-from .forms import AccountRegistrationForm, AccountUpdateForm
+from .forms import AccountRegistrationForm, AccountUpdateForm, AccountUpdateProfileForm
 
 
 class AccountRegistrationView(CreateView):
@@ -47,11 +51,52 @@ class AccountPasswordChangeView(PasswordChangeView):
         return reverse('password_change_done')
 
 
-class AccountUpdateView(UpdateView):
-    model = User
-    template_name = 'accounts/profile_update.html'
-    success_url = reverse_lazy('accounts:profile_update')
-    form_class = AccountUpdateForm
+class AccountUpdateView(ProcessFormView):
+    # model = User
+    # template_name = 'accounts/profile_update.html'
+    # success_url = reverse_lazy('accounts:profile_update')
+    # form_class = AccountUpdateForm
 
-    def get_object(self, queryset=None):
-        return self.request.user
+    # def get_object(self, queryset=None):
+    #     return self.request.user
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        profile = request.user.profile
+
+        user_form = AccountUpdateForm(instance=user)
+        profile_form = AccountUpdateProfileForm(instance=profile)
+
+        return render(
+            request,
+            'accounts/profile_update.html',
+            {'user_form': user_form, 'profile_form': profile_form}
+        )
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        profile = request.user.profile
+
+        user_form = AccountUpdateForm(instance=user, data=request.POST)
+        profile_form = AccountUpdateProfileForm(
+            instance=profile,
+            data=request.POST,
+            files=request.FILES
+        )
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            # profile_form(avatar=request.FILES['avatar']).save()
+            # try:
+            #     profile_form(avatar=request.FILES['avatar']).save()
+            # except MultiValueDictKeyError:
+            #     raise KeyError('Keys for `request.FILES` are {}'.format(request.FILES.keys()))
+
+            return HttpResponseRedirect(reverse('accounts:profile_update'))
+
+        return render(
+            request,
+            'accounts/profile_update.html',
+            {'user_form': user_form, 'profile_form': profile_form}
+        )
