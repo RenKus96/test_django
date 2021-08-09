@@ -12,7 +12,7 @@
 
  {% block content %}
 
-    <form method="post">
+    <form enctype="multipart/form-data" method="post">
         {% csrf_token %}
         <div class="media">
             <div class="img-circle.vert">
