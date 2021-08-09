@@ -24,9 +24,6 @@
         <td>{{ student.age }}</td>
         <td>{% if student.group %}№{{ student.group.group_number }} Created: {{ student.group.date_of_creation }}{% endif %}</td>
         <td>{% if student.headed_group %}{{ student.headed_group }}{% endif %}</td>
-        {% comment %}
-        <td>{% if student.group.headman_id == student.id %}{{ student.group }}{% endif %}</td>
-        {% endcomment %}
         <td><a class="btn btn-outline-primary btn-sm" href="{% url 'students:update' student.id %}">EDIT</a></td>
         <td><a class="btn btn-outline-danger btn-sm" href="{% url 'students:delete' student.id %}">DELETE</a></td>
     </tr>
