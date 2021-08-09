@@ -31,3 +31,4 @@ class AccountUpdateProfileForm(ModelForm):
     class Meta:
         model = Profile
         fields = ['avatar', 'interests']
+

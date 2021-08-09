@@ -87,11 +87,6 @@ class AccountUpdateView(ProcessFormView):
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            # profile_form(avatar=request.FILES['avatar']).save()
-            # try:
-            #     profile_form(avatar=request.FILES['avatar']).save()
-            # except MultiValueDictKeyError:
-            #     raise KeyError('Keys for `request.FILES` are {}'.format(request.FILES.keys()))
 
             return HttpResponseRedirect(reverse('accounts:profile_update'))
 
