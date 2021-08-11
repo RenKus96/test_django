@@ -11,11 +11,24 @@
  {% endblock %}
 
  {% block content %}
-     <form method="post">
-         {% csrf_token %}
-         {{ form | crispy }}
 
-         <input class="btn btn-success mt-3" type="submit" value="Save">
-         <a class="btn btn-success mt-3" href="{% url 'index' %}">Cancel</a>
-     </form>
- {% endblock %}
+    <form enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        <div class="media">
+            <div class="img-circle.vert">
+                <img class="rounded-circle p-1 m-1" width="200" height="200" src="{{ user.profile.avatar.url }}">
+            </div>
+            <div class="media-body p-3 m-3">
+                <h2 class="account-heading">{{ user.username }}</h2>
+                <h3 class="account-heading">{{ user.first_name }} {{ user.last_name }}</h3>
+                <p class="text-secondary">{{ user.email }}</p>
+            </div>
+        </div>
+        {{ user_form | crispy }}
+        {{ profile_form | crispy }}
+
+        <input class="btn btn-success mt-3" type="submit" value="Save">
+        <a class="btn btn-success mt-3" href="{% url 'index' %}">Cancel</a>
+    </form>
+
+{% endblock %}

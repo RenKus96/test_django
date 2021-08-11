@@ -14,6 +14,7 @@ from students.models import Student
 
 from webargs import fields, validate
 from webargs.djangoparser import use_args, use_kwargs
+from copy import copy
 
 
 @login_required 
@@ -114,20 +115,27 @@ def generate_groups(request, count):
 
 
 class GroupListView(LoginRequiredMixin, ListView):
-    model = Group.objects.all().select_related('course', 'headman').prefetch_related('students', 'teachers')
-    queryset = GroupsFilter(queryset=model)
+    model = Group
     template_name = 'groups/list.html'
+    paginate_by = 5
+
+    def get_filter(self):
+        return GroupsFilter(
+            data=self.request.GET, 
+            queryset=self.model.objects.all().select_related('course', 'headman').prefetch_related('students', 'teachers')
+        )
 
     def get_queryset(self):
-        obj_filter = GroupsFilter(
-            data=self.request.GET, 
-            queryset=self.model
-        )
-        return obj_filter
+        return self.get_filter().qs
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['obj_filter'] = self.get_queryset()
+        context['obj_filter'] = self.get_filter()
+        params = self.request.GET
+        if 'page' in params:
+            params = copy(params)
+            del params['page']
+        context['get_params'] = params.urlencode()
         return context
 
 

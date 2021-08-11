@@ -13,7 +13,11 @@
     </tr>
     {% for teacher in list_objects %}
     <tr>
-        <td><b>{{ forloop.counter }}</b></td>
+        {% if is_paginated %}
+            <td><b>{{ forloop.counter0|add:page_obj.start_index }}</b></td>
+        {% else %}
+            <td><b>{{ forloop.counter }}</b></td>
+        {% endif %}
         <td>{{ teacher.academic_degrees }}</td>
         <td>{{ teacher.first_name }}</td>
         <td>{{ teacher.last_name }}</td>

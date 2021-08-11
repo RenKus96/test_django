@@ -67,7 +67,12 @@
       <ul class="navbar-nav d-flex">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Account
+            {% if user.is_authenticated %}
+              <img class="rounded-circle p-1 m-1" width="40" height="40" src="{{ user.profile.avatar.url }}">
+              {{ user.username }}
+            {% else %}
+              Account
+            {% endif %}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown3">
           {% if user.is_authenticated %}

@@ -13,6 +13,7 @@ from students.models import Student
 
 from webargs import fields, validate
 from webargs.djangoparser import use_args, use_kwargs
+from copy import copy
 
 
 def hello(request):
@@ -117,19 +118,22 @@ def generate_students(request, count):
 
 
 class StudentListView(LoginRequiredMixin, ListView):
-    model = Student.objects.all().select_related('group', 'headed_group')
+    model = Student
     template_name = 'students/list.html'
+    paginate_by = 10
+
+    def get_filter(self):
+        return StudentsFilter(
+            data=self.request.GET, 
+            queryset=self.model.objects.all().select_related('group', 'headed_group')
+        )
 
     def get_queryset(self):
-        obj_filter = StudentsFilter(
-            data=self.request.GET, 
-            queryset=self.model
-        )
-        return obj_filter
+        return self.get_filter().qs
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['obj_filter'] = self.get_queryset()
+        context['obj_filter'] = self.get_filter()
         return context
 
 

@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.conf.urls.static import static
+from django.conf import Settings, settings
 
 from core.views import index
 # from groups.views import create_group, generate_groups, get_groups, update_group
@@ -35,26 +37,15 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
 
-	# path('generate_students/', generate_students),
-    # path('students/', get_students),
-    # path('students/create/', create_student),
-    # path('students/update/<int:id>', update_student),
     path('students/', include('students.urls')),
-
-    # path('generate_groups/', generate_groups),
-	# path('groups/', get_groups),
-    # path('groups/create/', create_group),
-    # path('groups/update/<int:id>', update_group),
     path('groups/', include('groups.urls')),
-
-    # path('generate_teachers/', generate_teachers),
-	# path('teachers/', get_teachers),
-    # path('teachers/create/', create_teacher),
-    # path('teachers/update/<int:id>', update_teacher),
     path('teachers/', include('teachers.urls')),
-
-    # path('generate_courses/', generate_courses),
     path('courses/', include('courses.urls')),
 
-	path('__debug__/', include(debug_toolbar.urls)),    
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ]

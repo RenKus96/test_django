@@ -28,9 +28,9 @@
             <th><i class="bi bi-pencil-fill"></i></th>
             <th><i class="bi bi-trash"></i></th>
         </tr>
-        {% for group in obj_filter.qs %}
+        {% for group in object_list %}
         <tr>
-            <td><b>{{ forloop.counter }}</b></td>
+            <td><b>{{ forloop.counter0|add:page_obj.start_index }}</b></td>
             <td>{{ group.group_number }}</td>
             <td>{% if group.course %}{{ group.course.academic_subject }}{% endif %}</td>
             {#<td>{{ group.academic_subject }}</td>#}
@@ -53,4 +53,9 @@
         </tr>
         {% endfor %}
     </table>
+
+    {% if is_paginated %}
+        {% include 'includes/paginator.html' %}
+    {% endif %}
+
 {% endblock %}
